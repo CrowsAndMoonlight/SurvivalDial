@@ -1,0 +1,2241 @@
+[
+    {
+        "key":  "ext_jumpPayMult",
+        "label":  "Jump Pay Mult",
+        "category":  "Career",
+        "type":  "number",
+        "default":  0,
+        "min":  0,
+        "max":  2,
+        "integer":  false,
+        "status":  "live",
+        "description":  "Extra crew pay when jumping out of a populated system, as a multiple of crew salary. Zero disables this charge.",
+        "evidence":  [
+                         "com/fs/starfarer/api/impl/campaign/JumpPointInteractionDialogPluginImpl.java",
+                         "com/fs/starfarer/api/impl/campaign/MonthlyReportNodeTooltipCreator.java"
+                     ]
+    },
+    {
+        "key":  "ext_spacerShareThresholdSalaryMonths",
+        "label":  "Spacer Share Threshold Salary Months",
+        "category":  "Career",
+        "type":  "number",
+        "default":  12,
+        "min":  0,
+        "max":  48,
+        "integer":  true,
+        "status":  "live",
+        "description":  "Savings protected from the spacer lifestyle charge, measured in months of crew salary.",
+        "evidence":  [
+                         "com/fs/starfarer/api/impl/campaign/MonthlyReportNodeTooltipCreator.java",
+                         "com/fs/starfarer/api/util/Misc.java"
+                     ]
+    },
+    {
+        "key":  "ext_spacerSharePerMonth",
+        "label":  "Spacer Share Per Month",
+        "category":  "Career",
+        "type":  "number",
+        "default":  0.1,
+        "min":  0,
+        "max":  1,
+        "integer":  false,
+        "status":  "live",
+        "description":  "Monthly fraction of eligible savings spent by the spacer lifestyle. 0.10 means 10%; zero disables it.",
+        "evidence":  [
+                         "com/fs/starfarer/api/impl/campaign/CoreScript.java",
+                         "com/fs/starfarer/api/impl/campaign/MonthlyReportNodeTooltipCreator.java",
+                         "com/fs/starfarer/api/util/Misc.java"
+                     ]
+    },
+    {
+        "key":  "ext_retirementMinCycles",
+        "label":  "Retirement Min Cycles",
+        "category":  "Career",
+        "type":  "number",
+        "default":  25,
+        "min":  0,
+        "max":  100,
+        "integer":  true,
+        "status":  "creation",
+        "description":  "Earliest retirement cycle offset. Zero disables ordinary retirement checks. The date is rolled at campaign creation; changing this later does not reroll it.",
+        "evidence":  [
+                         "com/fs/starfarer/api/impl/campaign/RetirementScript.java"
+                     ]
+    },
+    {
+        "key":  "ext_retirementMaxCycles",
+        "label":  "Retirement Max Cycles",
+        "category":  "Career",
+        "type":  "number",
+        "default":  30,
+        "min":  0,
+        "max":  120,
+        "integer":  true,
+        "status":  "creation",
+        "description":  "Latest retirement cycle offset. Must be at least the minimum. Used when the retirement date is first rolled.",
+        "evidence":  [
+                         "com/fs/starfarer/api/impl/campaign/RetirementScript.java"
+                     ]
+    },
+    {
+        "key":  "ext_retirementDelayCostBase",
+        "label":  "Retirement Delay Cost Base",
+        "category":  "Career",
+        "type":  "number",
+        "default":  20000,
+        "min":  0,
+        "max":  80000,
+        "integer":  true,
+        "status":  "creation",
+        "description":  "Starting monthly rejuvenation cost in credits. Stored when the retirement script is created.",
+        "evidence":  [
+                         "com/fs/starfarer/api/impl/campaign/RetirementScript.java"
+                     ]
+    },
+    {
+        "key":  "ext_retirementDelayCostPerMonth",
+        "label":  "Retirement Delay Cost Per Month",
+        "category":  "Career",
+        "type":  "number",
+        "default":  1000,
+        "min":  0,
+        "max":  4000,
+        "integer":  true,
+        "status":  "live",
+        "description":  "Credits added to rejuvenation costs each month after postponing retirement.",
+        "evidence":  [
+                         "com/fs/starfarer/api/impl/campaign/RetirementScript.java"
+                     ]
+    },
+    {
+        "key":  "ext_retirementDelayCostMax",
+        "label":  "Retirement Delay Cost Max",
+        "category":  "Career",
+        "type":  "number",
+        "default":  50000,
+        "min":  0,
+        "max":  200000,
+        "integer":  true,
+        "status":  "live",
+        "description":  "Maximum monthly rejuvenation charge in credits.",
+        "evidence":  [
+                         "com/fs/starfarer/api/impl/campaign/RetirementScript.java"
+                     ]
+    },
+    {
+        "key":  "ext_shipBuyPriceMult",
+        "label":  "Ship Buy Price Mult",
+        "category":  "Markets and income",
+        "type":  "array",
+        "default":  [
+                        5,
+                        5,
+                        6,
+                        8
+                    ],
+        "min":  0,
+        "max":  32,
+        "integer":  false,
+        "status":  "live",
+        "description":  "Ship purchase price multiplier by hull size. 1 means the normal-mode reference price; 5 means five times that price before other modifiers.",
+        "evidence":  [
+                         "com/fs/starfarer/api/impl/campaign/missions/HandMeDownFreighter.java",
+                         "com/fs/starfarer/api/impl/campaign/missions/HijackingMission.java",
+                         "com/fs/starfarer/api/impl/campaign/missions/SurplusShipHull.java",
+                         "com/fs/starfarer/api/util/Misc.java",
+                         "starfarer_obf.jar: campaign/fleet/FleetMember.getBaseBuyValue/getBaseSellValue (dynamic getter inspected with javap)"
+                     ],
+        "presetReference":  1
+    },
+    {
+        "key":  "ext_pristineShipSellPriceMult",
+        "label":  "Pristine Ship Sell Price Mult",
+        "category":  "Markets and income",
+        "type":  "array",
+        "default":  [
+                        1,
+                        1,
+                        1,
+                        1
+                    ],
+        "min":  0,
+        "max":  4,
+        "integer":  false,
+        "status":  "live",
+        "description":  "Resale multiplier for pristine ships by hull size, combined with the game\u0027s ordinary ship resale factor. It is not a percentage of the purchase price.",
+        "evidence":  [
+                         "starfarer_obf.jar: campaign/fleet/FleetMember.getBaseBuyValue/getBaseSellValue (dynamic getter inspected with javap)"
+                     ]
+    },
+    {
+        "key":  "ext_shipSellValueIncreasePerPartUsed",
+        "label":  "Ship Sell Value Increase Per Part Used",
+        "category":  "Markets and income",
+        "type":  "number",
+        "default":  5000,
+        "min":  0,
+        "max":  20000,
+        "integer":  true,
+        "status":  "live",
+        "description":  "Credits added to resale value per Domain-grade Part spent repairing the ship, with the game\u0027s repair-count cap.",
+        "evidence":  [
+                         "com/fs/starfarer/api/impl/campaign/DomainGradePartsPlugin.java"
+                     ]
+    },
+    {
+        "key":  "ext_shipSellValueMultPerSMod",
+        "label":  "Ship Sell Value Mult Per SMod",
+        "category":  "Markets and income",
+        "type":  "number",
+        "default":  1,
+        "min":  0,
+        "max":  4,
+        "integer":  false,
+        "status":  "live",
+        "description":  "Resale bonus per built-in S-mod. The multiplier is 1 + this value times the number of S-mods.",
+        "evidence":  [
+                         "com/fs/starfarer/api/impl/campaign/DomainGradePartsPlugin.java"
+                     ]
+    },
+    {
+        "key":  "ext_shipStoragePriceMult",
+        "label":  "Ship Storage Price Mult",
+        "category":  "Markets and income",
+        "type":  "number",
+        "default":  0.5,
+        "min":  0,
+        "max":  2,
+        "integer":  false,
+        "status":  "live",
+        "description":  "Multiplier used for the ship value underlying storage charges. Lower values reduce that component of storage fees.",
+        "evidence":  [
+                         "com/fs/starfarer/api/util/Misc.java"
+                     ]
+    },
+    {
+        "key":  "ext_shipBuyPriceMultPerDMod",
+        "label":  "Ship Buy Price Mult Per DMod",
+        "category":  "Markets and income",
+        "type":  "number",
+        "default":  0.85,
+        "min":  0.05,
+        "max":  1,
+        "integer":  false,
+        "status":  "live",
+        "description":  "Remaining purchase-price fraction per D-mod. 0.85 leaves 85% per D-mod; smaller values make damaged ships cheaper.",
+        "evidence":  [
+                         "starfarer_obf.jar: campaign/fleet/FleetMember.getBaseBuyValue/getBaseSellValue (dynamic getter inspected with javap)"
+                     ]
+    },
+    {
+        "key":  "ext_weaponPriceMult",
+        "label":  "Weapon Price Mult",
+        "category":  "Markets and income",
+        "type":  "number",
+        "default":  10,
+        "min":  0,
+        "max":  40,
+        "integer":  false,
+        "status":  "live",
+        "description":  "Weapon base-price multiplier. 1 restores the normal-mode base price; 10 means ten times that price.",
+        "evidence":  [
+                         "starfarer_obf.jar: BaseWeaponSpec.getBaseValue (dynamic getter, inspected with javap)"
+                     ],
+        "presetReference":  1
+    },
+    {
+        "key":  "ext_fighterPriceMult",
+        "label":  "Fighter Price Mult",
+        "category":  "Markets and income",
+        "type":  "number",
+        "default":  5,
+        "min":  0,
+        "max":  20,
+        "integer":  false,
+        "status":  "live",
+        "description":  "Fighter LPC base-price multiplier, before market and resale modifiers.",
+        "evidence":  [
+                         "starfarer_obf.jar: loading/specs/FighterWingSpec.getBaseValue (dynamic getter inspected with javap)"
+                     ],
+        "presetReference":  1
+    },
+    {
+        "key":  "ext_hullmodPriceMult",
+        "label":  "Hullmod Price Mult",
+        "category":  "Markets and income",
+        "type":  "number",
+        "default":  7,
+        "min":  0,
+        "max":  28,
+        "integer":  false,
+        "status":  "live",
+        "description":  "Hullmod package base-price multiplier, before resale modifiers.",
+        "evidence":  [
+                         "starfarer_obf.jar: loading/specs/O.getBaseValue (dynamic getter inspected with javap)"
+                     ],
+        "presetReference":  1
+    },
+    {
+        "key":  "ext_hullmodSellPriceMult",
+        "label":  "Hullmod Sell Price Mult",
+        "category":  "Markets and income",
+        "type":  "number",
+        "default":  0.25,
+        "min":  0,
+        "max":  2,
+        "integer":  false,
+        "status":  "live",
+        "description":  "Multiplier applied when selling hullmod packages. Higher values increase sale proceeds.",
+        "evidence":  [
+                         "starfarer_obf.jar: campaign/ui/trade/E.computeCurrentSingleItemSellCost/computeSellCost (dynamic getter inspected with javap)"
+                     ]
+    },
+    {
+        "key":  "ext_weaponAndFighterSellPriceMult",
+        "label":  "Weapon And Fighter Sell Price Mult",
+        "category":  "Markets and income",
+        "type":  "number",
+        "default":  1.5,
+        "min":  0,
+        "max":  6,
+        "integer":  false,
+        "status":  "live",
+        "description":  "Resale multiplier for weapons and fighter LPCs, applied after their Extended price multiplier.",
+        "evidence":  [
+                         "starfarer_obf.jar: campaign/fleet/FleetMember.getBaseBuyValue/getBaseSellValue (dynamic getter inspected with javap)"
+                     ]
+    },
+    {
+        "key":  "ext_blueprintSellPriceMult",
+        "label":  "Blueprint Sell Price Mult",
+        "category":  "Markets and income",
+        "type":  "number",
+        "default":  0.3,
+        "min":  0,
+        "max":  2,
+        "integer":  false,
+        "status":  "live",
+        "description":  "Blueprint resale multiplier outside the black market.",
+        "evidence":  [
+                         "starfarer_obf.jar: campaign/ui/trade/E.computeCurrentSingleItemSellCost/computeSellCost (dynamic getter inspected with javap)"
+                     ]
+    },
+    {
+        "key":  "ext_blueprintSellPriceMultBlackMarket",
+        "label":  "Blueprint Sell Price Mult Black Market",
+        "category":  "Markets and income",
+        "type":  "number",
+        "default":  1,
+        "min":  0,
+        "max":  4,
+        "integer":  false,
+        "status":  "live",
+        "description":  "Blueprint resale multiplier on the black market.",
+        "evidence":  [
+                         "starfarer_obf.jar: campaign/ui/trade/E.computeCurrentSingleItemSellCost/computeSellCost (dynamic getter inspected with javap)"
+                     ]
+    },
+    {
+        "key":  "ext_partsForSaleFraction",
+        "label":  "Parts For Sale Fraction",
+        "category":  "Markets and income",
+        "type":  "number",
+        "default":  2,
+        "min":  0,
+        "max":  8,
+        "integer":  false,
+        "status":  "creation",
+        "description":  "Domain-grade Parts stock factor based on available supplies. Affects future stock generation, not an immediate inventory refill.",
+        "evidence":  [
+                         "com/fs/starfarer/api/impl/campaign/submarkets/BaseSubmarketPlugin.java"
+                     ]
+    },
+    {
+        "key":  "ext_partsPriceMult",
+        "label":  "Parts Price Mult",
+        "category":  "Markets and income",
+        "type":  "number",
+        "default":  2,
+        "min":  0,
+        "max":  8,
+        "integer":  false,
+        "status":  "live",
+        "description":  "Domain-grade Parts price multiplier relative to their base price of 10,000 credits.",
+        "evidence":  [
+                         "starfarer_obf.jar: loading/N.getBasePrice (ext_ + commodity id + PriceMult) (dynamic getter inspected with javap)"
+                     ],
+        "presetReference":  1
+    },
+    {
+        "key":  "ext_partsSpecialSalvageDropFraction",
+        "label":  "Parts Special Salvage Drop Fraction",
+        "category":  "Salvage and recovery",
+        "type":  "number",
+        "default":  0.5,
+        "min":  0,
+        "max":  2,
+        "integer":  false,
+        "status":  "creation",
+        "description":  "Domain-grade Parts factor for special salvage drops, such as the Domain mothership. Existing rolled loot is unchanged.",
+        "evidence":  [
+                         "com/fs/starfarer/api/impl/campaign/rulecmd/salvage/SalvageEntity.java"
+                     ]
+    },
+    {
+        "key":  "ext_partsPerUnitOfSupplies",
+        "label":  "Parts Per Unit Of Supplies",
+        "category":  "Markets and income",
+        "type":  "number",
+        "default":  0.025,
+        "min":  0,
+        "max":  2,
+        "integer":  false,
+        "status":  "creation",
+        "description":  "Domain-grade Parts generated per eligible unit of supplies in salvage calculations.",
+        "evidence":  [
+                         "com/fs/starfarer/api/impl/campaign/DomainGradePartsPlugin.java"
+                     ]
+    },
+    {
+        "key":  "ext_shipForSaleFraction",
+        "label":  "Ship For Sale Fraction",
+        "category":  "Markets and income",
+        "type":  "number",
+        "default":  0.25,
+        "min":  0,
+        "max":  2,
+        "integer":  false,
+        "status":  "future",
+        "description":  "Ship availability factor for newly generated market stock. Lower values mean fewer ships.",
+        "evidence":  [
+                         "com/fs/starfarer/api/impl/campaign/submarkets/BaseSubmarketPlugin.java"
+                     ],
+        "presetReference":  1
+    },
+    {
+        "key":  "ext_shipRecoverableFraction",
+        "label":  "Ship Recoverable Fraction",
+        "category":  "Salvage and recovery",
+        "type":  "number",
+        "default":  0.2,
+        "min":  0,
+        "max":  2,
+        "integer":  false,
+        "status":  "future",
+        "description":  "Fraction used for ordinary post-battle ship recovery availability. Existing recovery lists are unchanged.",
+        "evidence":  [
+                         "com/fs/starfarer/api/impl/campaign/FleetEncounterContext.java"
+                     ],
+        "presetReference":  1
+    },
+    {
+        "key":  "ext_derelictShipRecoverableFraction",
+        "label":  "Derelict Ship Recoverable Fraction",
+        "category":  "Salvage and recovery",
+        "type":  "number",
+        "default":  0.1,
+        "min":  0,
+        "max":  2,
+        "integer":  false,
+        "status":  "creation",
+        "description":  "Recovery availability factor for derelict ships when their result is generated.",
+        "evidence":  [
+                         "com/fs/starfarer/api/impl/campaign/rulecmd/salvage/special/ShipRecoverySpecial.java",
+                         "com/fs/starfarer/api/util/Misc.java"
+                     ],
+        "presetReference":  1
+    },
+    {
+        "key":  "ext_shipRecoveryWithStoryPointsFraction",
+        "label":  "Ship Recovery With Story Points Fraction",
+        "category":  "Salvage and recovery",
+        "type":  "number",
+        "default":  0.2,
+        "min":  0,
+        "max":  2,
+        "integer":  false,
+        "status":  "creation",
+        "description":  "Availability factor for additional recoveries requiring story points.",
+        "evidence":  [
+                         "com/fs/starfarer/api/impl/campaign/rulecmd/salvage/SalvageEntity.java"
+                     ]
+    },
+    {
+        "key":  "ext_weaponForSaleFraction",
+        "label":  "Weapon For Sale Fraction",
+        "category":  "Markets and income",
+        "type":  "number",
+        "default":  0.2,
+        "min":  0,
+        "max":  2,
+        "integer":  false,
+        "status":  "future",
+        "description":  "Weapon availability factor for future market stock refreshes.",
+        "evidence":  [
+                         "com/fs/starfarer/api/impl/campaign/submarkets/BaseSubmarketPlugin.java"
+                     ],
+        "presetReference":  1
+    },
+    {
+        "key":  "ext_weaponDropFraction",
+        "label":  "Weapon Drop Fraction",
+        "category":  "Salvage and recovery",
+        "type":  "number",
+        "default":  0.1,
+        "min":  0,
+        "max":  2,
+        "integer":  false,
+        "status":  "future",
+        "description":  "Weapon drop factor after battles. Existing loot is unchanged.",
+        "evidence":  [
+                         "com/fs/starfarer/api/impl/campaign/FleetEncounterContext.java"
+                     ],
+        "presetReference":  1
+    },
+    {
+        "key":  "ext_weaponSalvageDropFraction",
+        "label":  "Weapon Salvage Drop Fraction",
+        "category":  "Salvage and recovery",
+        "type":  "number",
+        "default":  0.2,
+        "min":  0,
+        "max":  2,
+        "integer":  false,
+        "status":  "creation",
+        "description":  "Weapon drop factor when generating salvage-site loot.",
+        "evidence":  [
+                         "com/fs/starfarer/api/impl/campaign/rulecmd/salvage/SalvageEntity.java"
+                     ]
+    },
+    {
+        "key":  "ext_fighterForSaleFraction",
+        "label":  "Fighter For Sale Fraction",
+        "category":  "Markets and income",
+        "type":  "number",
+        "default":  0.2,
+        "min":  0,
+        "max":  2,
+        "integer":  false,
+        "status":  "future",
+        "description":  "Fighter LPC availability factor for future market stock refreshes.",
+        "evidence":  [
+                         "com/fs/starfarer/api/impl/campaign/submarkets/BaseSubmarketPlugin.java"
+                     ],
+        "presetReference":  1
+    },
+    {
+        "key":  "ext_fighterDropFraction",
+        "label":  "Fighter Drop Fraction",
+        "category":  "Salvage and recovery",
+        "type":  "number",
+        "default":  0.2,
+        "min":  0,
+        "max":  2,
+        "integer":  false,
+        "status":  "future",
+        "description":  "Fighter LPC drop factor after battles.",
+        "evidence":  [
+                         "com/fs/starfarer/api/impl/campaign/FleetEncounterContext.java"
+                     ],
+        "presetReference":  1
+    },
+    {
+        "key":  "ext_fighterSalvageDropFraction",
+        "label":  "Fighter Salvage Drop Fraction",
+        "category":  "Salvage and recovery",
+        "type":  "number",
+        "default":  0.3,
+        "min":  0,
+        "max":  2,
+        "integer":  false,
+        "status":  "creation",
+        "description":  "Fighter LPC drop factor for salvage sites.",
+        "evidence":  [
+                         "com/fs/starfarer/api/impl/campaign/rulecmd/salvage/SalvageEntity.java"
+                     ]
+    },
+    {
+        "key":  "ext_hullmodForSaleFraction",
+        "label":  "Hullmod For Sale Fraction",
+        "category":  "Markets and income",
+        "type":  "number",
+        "default":  0.35,
+        "min":  0,
+        "max":  2,
+        "integer":  false,
+        "status":  "future",
+        "description":  "Hullmod package availability factor for future market stock refreshes.",
+        "evidence":  [
+                         "com/fs/starfarer/api/impl/campaign/submarkets/BaseSubmarketPlugin.java"
+                     ],
+        "presetReference":  1
+    },
+    {
+        "key":  "ext_hullmodDropFraction",
+        "label":  "Hullmod Drop Fraction",
+        "category":  "Salvage and recovery",
+        "type":  "number",
+        "default":  0.25,
+        "min":  0,
+        "max":  2,
+        "integer":  false,
+        "status":  "future",
+        "description":  "Hullmod package drop factor after battles.",
+        "evidence":  [
+                         "com/fs/starfarer/api/impl/campaign/FleetEncounterContext.java",
+                         "com/fs/starfarer/api/impl/combat/threat/ThreatFIDConfig.java"
+                     ],
+        "presetReference":  1
+    },
+    {
+        "key":  "ext_hullmodSalvageDropFraction",
+        "label":  "Hullmod Salvage Drop Fraction",
+        "category":  "Salvage and recovery",
+        "type":  "number",
+        "default":  0.5,
+        "min":  0,
+        "max":  2,
+        "integer":  false,
+        "status":  "creation",
+        "description":  "Hullmod package drop factor for salvage sites.",
+        "evidence":  [
+                         "com/fs/starfarer/api/impl/campaign/rulecmd/salvage/SalvageEntity.java"
+                     ]
+    },
+    {
+        "key":  "ext_specialItemSalvageDropFraction",
+        "label":  "Special Item Salvage Drop Fraction",
+        "category":  "Salvage and recovery",
+        "type":  "number",
+        "default":  0.5,
+        "min":  0,
+        "max":  2,
+        "integer":  false,
+        "status":  "creation",
+        "description":  "Special-item salvage factor. Does not recreate loot already generated.",
+        "evidence":  [
+                         "com/fs/starfarer/api/impl/campaign/rulecmd/salvage/SalvageEntity.java"
+                     ]
+    },
+    {
+        "key":  "ext_commoditySalvageDropFraction",
+        "label":  "Commodity Salvage Drop Fraction",
+        "category":  "Salvage and recovery",
+        "type":  "number",
+        "default":  0.3,
+        "min":  0,
+        "max":  2,
+        "integer":  false,
+        "status":  "creation",
+        "description":  "Ordinary commodity salvage factor. Does not recreate loot already generated.",
+        "evidence":  [
+                         "com/fs/starfarer/api/impl/campaign/rulecmd/salvage/SalvageEntity.java",
+                         "com/fs/starfarer/api/impl/campaign/rulecmd/salvage/special/CargoManifestSpecial.java",
+                         "com/fs/starfarer/api/impl/campaign/rulecmd/salvage/special/SleeperPodsSpecial.java"
+                     ],
+        "presetReference":  1
+    },
+    {
+        "key":  "ext_sleeperPodsSpecialCrewFraction",
+        "label":  "Sleeper Pods Special Crew Fraction",
+        "category":  "Salvage and recovery",
+        "type":  "number",
+        "default":  0.3,
+        "min":  0,
+        "max":  2,
+        "integer":  false,
+        "status":  "creation",
+        "description":  "Crew reward factor for special sleeper-pod salvage.",
+        "evidence":  [
+                         "com/fs/starfarer/api/impl/campaign/rulecmd/salvage/special/SleeperPodsSpecial.java"
+                     ]
+    },
+    {
+        "key":  "ext_salvageCargoFractionPostCombat",
+        "label":  "Salvage Cargo Fraction Post Combat",
+        "category":  "Salvage and recovery",
+        "type":  "number",
+        "default":  0.4,
+        "min":  0,
+        "max":  2,
+        "integer":  false,
+        "status":  "future",
+        "description":  "Fraction of cargo made available through post-combat salvage calculations.",
+        "evidence":  [
+                         "com/fs/starfarer/api/impl/campaign/FleetEncounterContext.java"
+                     ]
+    },
+    {
+        "key":  "ext_threatResourceSalvageMult",
+        "label":  "Threat Resource Salvage Mult",
+        "category":  "Salvage and recovery",
+        "type":  "number",
+        "default":  0.25,
+        "min":  0,
+        "max":  2,
+        "integer":  false,
+        "status":  "future",
+        "description":  "Resource salvage multiplier for Threat encounters.",
+        "evidence":  [
+                         "com/fs/starfarer/api/impl/campaign/FleetEncounterContext.java"
+                     ]
+    },
+    {
+        "key":  "ext_aiCoreDropFraction",
+        "label":  "Ai Core Drop Fraction",
+        "category":  "Salvage and recovery",
+        "type":  "number",
+        "default":  0.1,
+        "min":  0,
+        "max":  2,
+        "integer":  false,
+        "status":  "future",
+        "description":  "AI-core drop factor for future loot rolls.",
+        "evidence":  [
+                         "com/fs/starfarer/api/impl/campaign/FleetEncounterContext.java"
+                     ],
+        "presetReference":  1
+    },
+    {
+        "key":  "ext_substrateDropFraction",
+        "label":  "Substrate Drop Fraction",
+        "category":  "Salvage and recovery",
+        "type":  "number",
+        "default":  0.4,
+        "min":  0,
+        "max":  2,
+        "integer":  false,
+        "status":  "creation",
+        "description":  "Substrate drop factor for future loot rolls.",
+        "evidence":  [
+                         "com/fs/starfarer/api/impl/campaign/rulecmd/DwellerCMD.java"
+                     ]
+    },
+    {
+        "key":  "ext_barCustomProductionMaxValueMult",
+        "label":  "Bar Custom Production Max Value Mult",
+        "category":  "Markets and income",
+        "type":  "number",
+        "default":  3,
+        "min":  0,
+        "max":  12,
+        "integer":  false,
+        "status":  "creation",
+        "description":  "Maximum custom-production budget multiplier for bar offers. Existing offers keep their generated terms.",
+        "evidence":  [
+                         "com/fs/starfarer/api/impl/campaign/missions/CustomProductionContract.java"
+                     ]
+    },
+    {
+        "key":  "ext_playerIndustryCustomProductionMaxValueMult",
+        "label":  "Player Industry Custom Production Max Value Mult",
+        "category":  "Colonies",
+        "type":  "number",
+        "default":  3,
+        "min":  0,
+        "max":  12,
+        "integer":  false,
+        "status":  "live",
+        "description":  "Maximum production-budget multiplier for player industry custom orders.",
+        "evidence":  [
+                         "starfarer_obf.jar: loading/specs/FactionProduction.getProductionCapacityForMarket (dynamic getter inspected with javap)"
+                     ]
+    },
+    {
+        "key":  "ext_fuelCapacityMult",
+        "label":  "Fuel Capacity Mult",
+        "category":  "Fleet and travel",
+        "type":  "number",
+        "default":  0.5,
+        "min":  0.05,
+        "max":  3,
+        "integer":  false,
+        "status":  "live",
+        "description":  "Fuel capacity multiplier for non-tankers. 0.5 gives half normal capacity; 1 restores it. Lowering capacity can leave your fleet over capacity.",
+        "evidence":  [
+                         "starfarer_obf.jar: loading/specs/O00o$Oo (dynamic getters, inspected with javap)"
+                     ],
+        "presetReference":  1
+    },
+    {
+        "key":  "ext_fuelCapacityMultTanker",
+        "label":  "Fuel Capacity Mult Tanker",
+        "category":  "Fleet and travel",
+        "type":  "number",
+        "default":  0.35,
+        "min":  0.05,
+        "max":  3,
+        "integer":  false,
+        "status":  "live",
+        "description":  "Fuel capacity multiplier for ships tagged as tankers. 0.35 gives 35% of normal capacity.",
+        "evidence":  [
+                         "starfarer_obf.jar: loading/specs/O00o$Oo (dynamic getters, inspected with javap)"
+                     ],
+        "presetReference":  1
+    },
+    {
+        "key":  "ext_fuelUseMult",
+        "label":  "Fuel Use Mult",
+        "category":  "Fleet and travel",
+        "type":  "array",
+        "default":  [
+                        1,
+                        1,
+                        1.5,
+                        2
+                    ],
+        "min":  0,
+        "max":  8,
+        "integer":  false,
+        "status":  "live",
+        "description":  "Fuel use per light-year multiplier for non-civilian ships, by hull size. 2 doubles consumption.",
+        "evidence":  [
+                         "starfarer_obf.jar: loading/specs/O00o$Oo (dynamic getters, inspected with javap)"
+                     ],
+        "presetReference":  1
+    },
+    {
+        "key":  "ext_fuelUseMultCiv",
+        "label":  "Fuel Use Mult Civ",
+        "category":  "Fleet and travel",
+        "type":  "array",
+        "default":  [
+                        1,
+                        1,
+                        1,
+                        1
+                    ],
+        "min":  0,
+        "max":  4,
+        "integer":  false,
+        "status":  "live",
+        "description":  "Fuel use per light-year multiplier for civilian ships, by hull size.",
+        "evidence":  [
+                         "starfarer_obf.jar: loading/specs/O00o$Oo (dynamic getters, inspected with javap)"
+                     ],
+        "presetReference":  1
+    },
+    {
+        "key":  "ext_personnelForSaleMinMultBadRep",
+        "label":  "Personnel For Sale Min Mult Bad Rep",
+        "category":  "Markets and income",
+        "type":  "number",
+        "default":  0.25,
+        "min":  0,
+        "max":  2,
+        "integer":  false,
+        "status":  "creation",
+        "description":  "Personnel availability multiplier at poor faction reputation.",
+        "evidence":  [
+                         "com/fs/starfarer/api/impl/campaign/submarkets/BaseSubmarketPlugin.java"
+                     ]
+    },
+    {
+        "key":  "ext_personnelForSaleMaxMultGoodRep",
+        "label":  "Personnel For Sale Max Mult Good Rep",
+        "category":  "Markets and income",
+        "type":  "number",
+        "default":  2,
+        "min":  0,
+        "max":  8,
+        "integer":  false,
+        "status":  "creation",
+        "description":  "Personnel availability multiplier at good faction reputation.",
+        "evidence":  [
+                         "com/fs/starfarer/api/impl/campaign/submarkets/BaseSubmarketPlugin.java"
+                     ]
+    },
+    {
+        "key":  "ext_crewForSaleFraction",
+        "label":  "Crew For Sale Fraction",
+        "category":  "Markets and income",
+        "type":  "number",
+        "default":  0.2,
+        "min":  0,
+        "max":  2,
+        "integer":  false,
+        "status":  "future",
+        "description":  "Availability multiplier for crew. 0.5 means half the reference stock. Applies to future stock generation; it does not refill existing inventories.",
+        "evidence":  [
+                         "com/fs/starfarer/api/impl/campaign/submarkets/BaseSubmarketPlugin.java:getCommodityAvailabilityMult (dynamic key)"
+                     ]
+    },
+    {
+        "key":  "ext_suppliesForSaleFraction",
+        "label":  "Supplies For Sale Fraction",
+        "category":  "Markets and income",
+        "type":  "number",
+        "default":  0.4,
+        "min":  0,
+        "max":  2,
+        "integer":  false,
+        "status":  "future",
+        "description":  "Availability multiplier for supplies. 0.5 means half the reference stock. Applies to future stock generation; it does not refill existing inventories.",
+        "evidence":  [
+                         "com/fs/starfarer/api/impl/campaign/submarkets/BaseSubmarketPlugin.java:getCommodityAvailabilityMult (dynamic key)"
+                     ]
+    },
+    {
+        "key":  "ext_fuelForSaleFraction",
+        "label":  "Fuel For Sale Fraction",
+        "category":  "Markets and income",
+        "type":  "number",
+        "default":  0.6,
+        "min":  0,
+        "max":  2,
+        "integer":  false,
+        "status":  "future",
+        "description":  "Availability multiplier for fuel. 0.5 means half the reference stock. Applies to future stock generation; it does not refill existing inventories.",
+        "evidence":  [
+                         "com/fs/starfarer/api/impl/campaign/submarkets/BaseSubmarketPlugin.java:getCommodityAvailabilityMult (dynamic key)"
+                     ]
+    },
+    {
+        "key":  "ext_marinesForSaleFraction",
+        "label":  "Marines For Sale Fraction",
+        "category":  "Markets and income",
+        "type":  "number",
+        "default":  0.2,
+        "min":  0,
+        "max":  2,
+        "integer":  false,
+        "status":  "future",
+        "description":  "Availability multiplier for marines. 0.5 means half the reference stock. Applies to future stock generation; it does not refill existing inventories.",
+        "evidence":  [
+                         "com/fs/starfarer/api/impl/campaign/submarkets/BaseSubmarketPlugin.java:getCommodityAvailabilityMult (dynamic key)"
+                     ]
+    },
+    {
+        "key":  "ext_drugsForSaleFraction",
+        "label":  "Drugs For Sale Fraction",
+        "category":  "Markets and income",
+        "type":  "number",
+        "default":  0.3,
+        "min":  0,
+        "max":  2,
+        "integer":  false,
+        "status":  "future",
+        "description":  "Availability multiplier for drugs. 0.5 means half the reference stock. Applies to future stock generation; it does not refill existing inventories.",
+        "evidence":  [
+                         "com/fs/starfarer/api/impl/campaign/submarkets/BaseSubmarketPlugin.java:getCommodityAvailabilityMult (dynamic key)"
+                     ]
+    },
+    {
+        "key":  "ext_organsForSaleFraction",
+        "label":  "Organs For Sale Fraction",
+        "category":  "Markets and income",
+        "type":  "number",
+        "default":  0.3,
+        "min":  0,
+        "max":  2,
+        "integer":  false,
+        "status":  "future",
+        "description":  "Availability multiplier for organs. 0.5 means half the reference stock. Applies to future stock generation; it does not refill existing inventories.",
+        "evidence":  [
+                         "com/fs/starfarer/api/impl/campaign/submarkets/BaseSubmarketPlugin.java:getCommodityAvailabilityMult (dynamic key)"
+                     ]
+    },
+    {
+        "key":  "ext_hand_weaponsForSaleFraction",
+        "label":  "Hand weapons For Sale Fraction",
+        "category":  "Markets and income",
+        "type":  "number",
+        "default":  0.2,
+        "min":  0,
+        "max":  2,
+        "integer":  false,
+        "status":  "future",
+        "description":  "Availability multiplier for hand weapons. 0.5 means half the reference stock. Applies to future stock generation; it does not refill existing inventories.",
+        "evidence":  [
+                         "com/fs/starfarer/api/impl/campaign/submarkets/BaseSubmarketPlugin.java:getCommodityAvailabilityMult (dynamic key)"
+                     ]
+    },
+    {
+        "key":  "ext_drugsForSaleFractionFreePort",
+        "label":  "Drugs For Sale Fraction Free Port",
+        "category":  "Markets and income",
+        "type":  "number",
+        "default":  0.15,
+        "min":  0,
+        "max":  2,
+        "integer":  false,
+        "status":  "future",
+        "description":  "Availability multiplier for drugs at free ports. 0.5 means half the reference stock. Applies to future stock generation; it does not refill existing inventories.",
+        "evidence":  [
+                         "com/fs/starfarer/api/impl/campaign/submarkets/BaseSubmarketPlugin.java:getCommodityAvailabilityMult (dynamic key)"
+                     ]
+    },
+    {
+        "key":  "ext_organsForSaleFractionFreePort",
+        "label":  "Organs For Sale Fraction Free Port",
+        "category":  "Markets and income",
+        "type":  "number",
+        "default":  0.15,
+        "min":  0,
+        "max":  2,
+        "integer":  false,
+        "status":  "future",
+        "description":  "Availability multiplier for organs at free ports. 0.5 means half the reference stock. Applies to future stock generation; it does not refill existing inventories.",
+        "evidence":  [
+                         "com/fs/starfarer/api/impl/campaign/submarkets/BaseSubmarketPlugin.java:getCommodityAvailabilityMult (dynamic key)"
+                     ]
+    },
+    {
+        "key":  "ext_hand_weaponsForSaleFractionFreePort",
+        "label":  "Hand weapons For Sale Fraction Free Port",
+        "category":  "Markets and income",
+        "type":  "number",
+        "default":  0.1,
+        "min":  0,
+        "max":  2,
+        "integer":  false,
+        "status":  "future",
+        "description":  "Availability multiplier for hand weapons at free ports. 0.5 means half the reference stock. Applies to future stock generation; it does not refill existing inventories.",
+        "evidence":  [
+                         "com/fs/starfarer/api/impl/campaign/submarkets/BaseSubmarketPlugin.java:getCommodityAvailabilityMult (dynamic key)"
+                     ]
+    },
+    {
+        "key":  "ext_crewForSaleFractionPlayerColony",
+        "label":  "Crew For Sale Fraction Player Colony",
+        "category":  "Colonies",
+        "type":  "number",
+        "default":  0.5,
+        "min":  0,
+        "max":  2,
+        "integer":  false,
+        "status":  "future",
+        "description":  "Availability multiplier for crew at player colonies. 0.5 means half the reference stock. Applies to future stock generation; it does not refill existing inventories.",
+        "evidence":  [
+                         "com/fs/starfarer/api/impl/campaign/submarkets/BaseSubmarketPlugin.java:getCommodityAvailabilityMult (dynamic key)"
+                     ]
+    },
+    {
+        "key":  "ext_suppliesForSaleFractionPlayerColony",
+        "label":  "Supplies For Sale Fraction Player Colony",
+        "category":  "Colonies",
+        "type":  "number",
+        "default":  0.65,
+        "min":  0,
+        "max":  3,
+        "integer":  false,
+        "status":  "future",
+        "description":  "Availability multiplier for supplies at player colonies. 0.5 means half the reference stock. Applies to future stock generation; it does not refill existing inventories.",
+        "evidence":  [
+                         "com/fs/starfarer/api/impl/campaign/submarkets/BaseSubmarketPlugin.java:getCommodityAvailabilityMult (dynamic key)"
+                     ]
+    },
+    {
+        "key":  "ext_fuelForSaleFractionPlayerColony",
+        "label":  "Fuel For Sale Fraction Player Colony",
+        "category":  "Colonies",
+        "type":  "number",
+        "default":  0.75,
+        "min":  0,
+        "max":  3,
+        "integer":  false,
+        "status":  "future",
+        "description":  "Availability multiplier for fuel at player colonies. 0.5 means half the reference stock. Applies to future stock generation; it does not refill existing inventories.",
+        "evidence":  [
+                         "com/fs/starfarer/api/impl/campaign/submarkets/BaseSubmarketPlugin.java:getCommodityAvailabilityMult (dynamic key)"
+                     ]
+    },
+    {
+        "key":  "ext_marinesForSaleFractionPlayerColony",
+        "label":  "Marines For Sale Fraction Player Colony",
+        "category":  "Colonies",
+        "type":  "number",
+        "default":  0.5,
+        "min":  0,
+        "max":  2,
+        "integer":  false,
+        "status":  "future",
+        "description":  "Availability multiplier for marines at player colonies. 0.5 means half the reference stock. Applies to future stock generation; it does not refill existing inventories.",
+        "evidence":  [
+                         "com/fs/starfarer/api/impl/campaign/submarkets/BaseSubmarketPlugin.java:getCommodityAvailabilityMult (dynamic key)"
+                     ]
+    },
+    {
+        "key":  "ext_crewForSaleMilitaryMult",
+        "label":  "Crew For Sale Military Mult",
+        "category":  "Markets and income",
+        "type":  "number",
+        "default":  1.5,
+        "min":  0,
+        "max":  6,
+        "integer":  false,
+        "status":  "future",
+        "description":  "Availability multiplier for crew at military markets. 0.5 means half the reference stock. Applies to future stock generation; it does not refill existing inventories.",
+        "evidence":  [
+                         "com/fs/starfarer/api/impl/campaign/submarkets/BaseSubmarketPlugin.java:getCommodityAvailabilityMult (dynamic key)"
+                     ]
+    },
+    {
+        "key":  "ext_suppliesForSaleMilitaryMult",
+        "label":  "Supplies For Sale Military Mult",
+        "category":  "Markets and income",
+        "type":  "number",
+        "default":  1.2,
+        "min":  0,
+        "max":  5,
+        "integer":  false,
+        "status":  "future",
+        "description":  "Availability multiplier for supplies at military markets. 0.5 means half the reference stock. Applies to future stock generation; it does not refill existing inventories.",
+        "evidence":  [
+                         "com/fs/starfarer/api/impl/campaign/submarkets/BaseSubmarketPlugin.java:getCommodityAvailabilityMult (dynamic key)"
+                     ]
+    },
+    {
+        "key":  "ext_fuelForSaleMilitaryMult",
+        "label":  "Fuel For Sale Military Mult",
+        "category":  "Markets and income",
+        "type":  "number",
+        "default":  1.2,
+        "min":  0,
+        "max":  5,
+        "integer":  false,
+        "status":  "future",
+        "description":  "Availability multiplier for fuel at military markets. 0.5 means half the reference stock. Applies to future stock generation; it does not refill existing inventories.",
+        "evidence":  [
+                         "com/fs/starfarer/api/impl/campaign/submarkets/BaseSubmarketPlugin.java:getCommodityAvailabilityMult (dynamic key)"
+                     ]
+    },
+    {
+        "key":  "ext_marinesForSaleMilitaryMult",
+        "label":  "Marines For Sale Military Mult",
+        "category":  "Markets and income",
+        "type":  "number",
+        "default":  1.5,
+        "min":  0,
+        "max":  6,
+        "integer":  false,
+        "status":  "future",
+        "description":  "Availability multiplier for marines at military markets. 0.5 means half the reference stock. Applies to future stock generation; it does not refill existing inventories.",
+        "evidence":  [
+                         "com/fs/starfarer/api/impl/campaign/submarkets/BaseSubmarketPlugin.java:getCommodityAvailabilityMult (dynamic key)"
+                     ]
+    },
+    {
+        "key":  "ext_localResourcesStockpileAndRateMult",
+        "label":  "Local Resources Stockpile And Rate Mult",
+        "category":  "Colonies",
+        "type":  "number",
+        "default":  0.3,
+        "min":  0,
+        "max":  2,
+        "integer":  false,
+        "status":  "creation",
+        "description":  "Player-colony local-resource stockpile and accumulation-rate multiplier.",
+        "evidence":  [
+                         "com/fs/starfarer/api/impl/campaign/submarkets/BaseSubmarketPlugin.java"
+                     ]
+    },
+    {
+        "key":  "ext_commissionBountyMult",
+        "label":  "Commission Bounty Mult",
+        "category":  "Missions and progression",
+        "type":  "number",
+        "default":  1,
+        "min":  0,
+        "max":  4,
+        "integer":  false,
+        "status":  "creation",
+        "description":  "Commission bounty payment multiplier for future eligible kills.",
+        "evidence":  [
+                         "com/fs/starfarer/api/impl/campaign/intel/FactionCommissionIntel.java"
+                     ]
+    },
+    {
+        "key":  "ext_commissionMonthlyIncomeMult",
+        "label":  "Commission Monthly Income Mult",
+        "category":  "Missions and progression",
+        "type":  "number",
+        "default":  0.1,
+        "min":  0,
+        "max":  2,
+        "integer":  false,
+        "status":  "creation",
+        "description":  "Monthly commission income multiplier. 0.1 pays one tenth of normal.",
+        "evidence":  [
+                         "com/fs/starfarer/api/impl/campaign/intel/FactionCommissionIntel.java"
+                     ],
+        "presetReference":  1
+    },
+    {
+        "key":  "ext_removeGalatiaStipend",
+        "label":  "Remove Galatia Stipend",
+        "category":  "Markets and income",
+        "type":  "boolean",
+        "default":  true,
+        "min":  0,
+        "max":  4,
+        "integer":  false,
+        "status":  "creation",
+        "description":  "Removes the Galatia Academy stipend in Extended mode. Disabling this does not retroactively pay missed income.",
+        "evidence":  [
+                         "com/fs/starfarer/api/impl/campaign/rulecmd/NGCAddDevStartingScript.java"
+                     ]
+    },
+    {
+        "key":  "ext_taskForceCostMult",
+        "label":  "Task Force Cost Mult",
+        "category":  "Markets and income",
+        "type":  "number",
+        "default":  2,
+        "min":  0,
+        "max":  8,
+        "integer":  false,
+        "status":  "creation",
+        "description":  "Credit cost multiplier when requesting a task force.",
+        "evidence":  [
+                         "com/fs/starfarer/api/impl/campaign/rulecmd/salvage/MiscCMD.java"
+                     ]
+    },
+    {
+        "key":  "ext_resupplyFleetCostMult",
+        "label":  "Resupply Fleet Cost Mult",
+        "category":  "Markets and income",
+        "type":  "number",
+        "default":  1.5,
+        "min":  0,
+        "max":  6,
+        "integer":  false,
+        "status":  "creation",
+        "description":  "Credit cost multiplier when requesting a resupply fleet.",
+        "evidence":  [
+                         "com/fs/starfarer/api/impl/campaign/rulecmd/salvage/MiscCMD.java"
+                     ]
+    },
+    {
+        "key":  "ext_resupplyCrewBroughtMult",
+        "label":  "Resupply Crew Brought Mult",
+        "category":  "Markets and income",
+        "type":  "number",
+        "default":  0.25,
+        "min":  0,
+        "max":  2,
+        "integer":  false,
+        "status":  "creation",
+        "description":  "Crew quantity multiplier for newly requested resupply fleets.",
+        "evidence":  [
+                         "com/fs/starfarer/api/impl/campaign/rulecmd/salvage/MiscCMD.java"
+                     ]
+    },
+    {
+        "key":  "ext_crewPriceMult",
+        "label":  "Crew Price Mult",
+        "category":  "Markets and income",
+        "type":  "number",
+        "default":  10,
+        "min":  0,
+        "max":  40,
+        "integer":  false,
+        "status":  "live",
+        "description":  "Crew purchase price multiplier relative to a base of 50 credits per crew member.",
+        "evidence":  [
+                         "starfarer_obf.jar: loading/N.getBasePrice (ext_ + commodity id + PriceMult) (dynamic getter inspected with javap)"
+                     ],
+        "presetReference":  1
+    },
+    {
+        "key":  "ext_marinesPriceMult",
+        "label":  "Marines Price Mult",
+        "category":  "Markets and income",
+        "type":  "number",
+        "default":  4,
+        "min":  0,
+        "max":  16,
+        "integer":  false,
+        "status":  "live",
+        "description":  "Marine purchase price multiplier relative to a base of 200 credits per marine.",
+        "evidence":  [
+                         "com/fs/starfarer/api/impl/campaign/missions/MercsOnTheRun.java",
+                         "starfarer_obf.jar: loading/N.getBasePrice (ext_ + commodity id + PriceMult) (dynamic getter inspected with javap)"
+                     ],
+        "presetReference":  1
+    },
+    {
+        "key":  "ext_suppliesPriceMult",
+        "label":  "Supplies Price Mult",
+        "category":  "Markets and income",
+        "type":  "number",
+        "default":  1,
+        "min":  0,
+        "max":  4,
+        "integer":  false,
+        "status":  "live",
+        "description":  "Supply base-price multiplier relative to 100 credits per unit.",
+        "evidence":  [
+                         "starfarer_obf.jar: loading/N.getBasePrice (ext_ + commodity id + PriceMult) (dynamic getter inspected with javap)"
+                     ]
+    },
+    {
+        "key":  "ext_fuelPriceMult",
+        "label":  "Fuel Price Mult",
+        "category":  "Markets and income",
+        "type":  "number",
+        "default":  3,
+        "min":  0,
+        "max":  12,
+        "integer":  false,
+        "status":  "live",
+        "description":  "Fuel base-price multiplier relative to 25 credits per unit.",
+        "evidence":  [
+                         "starfarer_obf.jar: loading/N.getBasePrice (ext_ + commodity id + PriceMult) (dynamic getter inspected with javap)"
+                     ],
+        "presetReference":  1
+    },
+    {
+        "key":  "ext_personnelSellPriceMult",
+        "label":  "Personnel Sell Price Mult",
+        "category":  "Markets and income",
+        "type":  "number",
+        "default":  0.1,
+        "min":  0,
+        "max":  2,
+        "integer":  false,
+        "status":  "live",
+        "description":  "Personnel resale multiplier. Higher values increase credits received when selling personnel.",
+        "evidence":  [
+                         "starfarer_obf.jar: campaign/ui/trade/E.computeCurrentSingleItemSellCost/computeSellCost (dynamic getter inspected with javap)"
+                     ]
+    },
+    {
+        "key":  "ext_crewSalaryMult",
+        "label":  "Crew Salary Mult",
+        "category":  "Fleet and travel",
+        "type":  "number",
+        "default":  3,
+        "min":  0,
+        "max":  12,
+        "integer":  false,
+        "status":  "live",
+        "description":  "Monthly crew salary multiplier relative to the ordinary salary calculation. 3 triples it.",
+        "evidence":  [
+                         "com/fs/starfarer/api/impl/campaign/CoreScript.java",
+                         "com/fs/starfarer/api/impl/campaign/MonthlyReportNodeTooltipCreator.java",
+                         "com/fs/starfarer/api/util/Misc.java"
+                     ],
+        "presetReference":  1
+    },
+    {
+        "key":  "ext_marineSalaryMult",
+        "label":  "Marine Salary Mult",
+        "category":  "Fleet and travel",
+        "type":  "number",
+        "default":  3,
+        "min":  0,
+        "max":  12,
+        "integer":  false,
+        "status":  "live",
+        "description":  "Monthly marine salary multiplier relative to the ordinary salary calculation.",
+        "evidence":  [
+                         "com/fs/starfarer/api/impl/campaign/CoreScript.java",
+                         "com/fs/starfarer/api/impl/campaign/MonthlyReportNodeTooltipCreator.java",
+                         "com/fs/starfarer/api/util/Misc.java"
+                     ],
+        "presetReference":  1
+    },
+    {
+        "key":  "ext_officerSalaryMult",
+        "label":  "Officer Salary Mult",
+        "category":  "Fleet and travel",
+        "type":  "number",
+        "default":  1,
+        "min":  0,
+        "max":  4,
+        "integer":  false,
+        "status":  "live",
+        "description":  "Officer salary multiplier. Higher values increase officer pay.",
+        "evidence":  [
+                         "com/fs/starfarer/api/impl/campaign/MonthlyReportNodeTooltipCreator.java",
+                         "com/fs/starfarer/api/util/Misc.java"
+                     ]
+    },
+    {
+        "key":  "ext_officerCombatPay",
+        "label":  "Officer Combat Pay",
+        "category":  "Fleet and travel",
+        "type":  "array",
+        "default":  [
+                        1,
+                        2,
+                        4,
+                        16
+                    ],
+        "min":  0,
+        "max":  64,
+        "integer":  false,
+        "status":  "live",
+        "description":  "Officer combat pay multiplier by commanded ship size, based on officer salary.",
+        "evidence":  [
+                         "com/fs/starfarer/api/util/Misc.java"
+                     ]
+    },
+    {
+        "key":  "ext_colonyGrowthRequiredMult",
+        "label":  "Colony Growth Required Mult",
+        "category":  "Colonies",
+        "type":  "number",
+        "default":  2,
+        "min":  0,
+        "max":  8,
+        "integer":  false,
+        "status":  "creation",
+        "description":  "Population growth required to reach the next colony size. Higher values slow growth.",
+        "evidence":  [
+                         "com/fs/starfarer/api/impl/campaign/population/CoreImmigrationPluginImpl.java"
+                     ],
+        "presetReference":  1
+    },
+    {
+        "key":  "ext_corruptionThreshold",
+        "label":  "Corruption Threshold",
+        "category":  "Colonies",
+        "type":  "number",
+        "default":  200000,
+        "min":  1,
+        "max":  800000,
+        "integer":  true,
+        "status":  "live",
+        "description":  "Colony income threshold in credits above which corruption applies. Higher values protect more income.",
+        "evidence":  [
+                         "com/fs/starfarer/api/impl/campaign/CoreScript.java"
+                     ]
+    },
+    {
+        "key":  "ext_corruptionExponent",
+        "label":  "Corruption Exponent",
+        "category":  "Colonies",
+        "type":  "number",
+        "default":  2,
+        "min":  1,
+        "max":  5,
+        "integer":  false,
+        "status":  "live",
+        "description":  "Exponent controlling income compression above the corruption threshold. 1 removes the compression; larger values strengthen it.",
+        "evidence":  [
+                         "com/fs/starfarer/api/impl/campaign/CoreScript.java"
+                     ]
+    },
+    {
+        "key":  "ext_corruptionUsesGrossIncome",
+        "label":  "Corruption Uses Gross Income",
+        "category":  "Colonies",
+        "type":  "boolean",
+        "default":  true,
+        "min":  0,
+        "max":  4,
+        "integer":  false,
+        "status":  "live",
+        "description":  "Whether corruption uses gross colony income rather than income after expenses.",
+        "evidence":  [
+                         "com/fs/starfarer/api/impl/campaign/CoreScript.java"
+                     ]
+    },
+    {
+        "key":  "ext_officersAvailableFraction",
+        "label":  "Officers Available Fraction",
+        "category":  "Markets and income",
+        "type":  "number",
+        "default":  0.15,
+        "min":  0,
+        "max":  2,
+        "integer":  false,
+        "status":  "creation",
+        "description":  "Officer availability factor for future recruitment generation.",
+        "evidence":  [
+                         "com/fs/starfarer/api/impl/campaign/events/OfficerManagerEvent.java",
+                         "com/fs/starfarer/api/impl/campaign/FleetEncounterContext.java"
+                     ]
+    },
+    {
+        "key":  "ext_cryopodOfficersFraction",
+        "label":  "Cryopod Officers Fraction",
+        "category":  "Salvage and recovery",
+        "type":  "number",
+        "default":  0.5,
+        "min":  0,
+        "max":  2,
+        "integer":  false,
+        "status":  "creation",
+        "description":  "Officer availability factor for future cryopod results.",
+        "evidence":  [
+                         "com/fs/starfarer/api/util/Misc.java"
+                     ]
+    },
+    {
+        "key":  "ext_cryopodAdminsFraction",
+        "label":  "Cryopod Admins Fraction",
+        "category":  "Salvage and recovery",
+        "type":  "number",
+        "default":  0.1,
+        "min":  0,
+        "max":  2,
+        "integer":  false,
+        "status":  "creation",
+        "description":  "Administrator availability factor for future cryopod results.",
+        "evidence":  [
+                         "com/fs/starfarer/api/util/Misc.java"
+                     ]
+    },
+    {
+        "key":  "ext_adminAvailableFraction",
+        "label":  "Admin Available Fraction",
+        "category":  "Markets and income",
+        "type":  "number",
+        "default":  0.1,
+        "min":  0,
+        "max":  2,
+        "integer":  false,
+        "status":  "creation",
+        "description":  "Administrator availability factor for future recruitment generation.",
+        "evidence":  [
+                         "com/fs/starfarer/api/impl/campaign/events/OfficerManagerEvent.java"
+                     ]
+    },
+    {
+        "key":  "ext_normalTariff",
+        "label":  "Normal Tariff",
+        "category":  "Markets and income",
+        "type":  "number",
+        "default":  0.4,
+        "min":  0,
+        "max":  1,
+        "integer":  false,
+        "status":  "live",
+        "description":  "Open-market tariff fraction. 0.4 means a 40% tariff.",
+        "evidence":  [
+                         "com/fs/starfarer/api/impl/campaign/submarkets/OpenMarketPlugin.java"
+                     ]
+    },
+    {
+        "key":  "ext_militaryMarketTariff",
+        "label":  "Military Market Tariff",
+        "category":  "Markets and income",
+        "type":  "number",
+        "default":  0.3,
+        "min":  0,
+        "max":  1,
+        "integer":  false,
+        "status":  "live",
+        "description":  "Military-market tariff fraction. 0.3 means a 30% tariff.",
+        "evidence":  [
+                         "com/fs/starfarer/api/impl/campaign/submarkets/MilitarySubmarketPlugin.java"
+                     ]
+    },
+    {
+        "key":  "ext_blackMarketTariff",
+        "label":  "Black Market Tariff",
+        "category":  "Markets and income",
+        "type":  "number",
+        "default":  0.25,
+        "min":  0,
+        "max":  1,
+        "integer":  false,
+        "status":  "live",
+        "description":  "Black-market tariff fraction when trading openly. 0.25 means 25%.",
+        "evidence":  [
+                         "com/fs/starfarer/api/impl/campaign/submarkets/BlackMarketPlugin.java"
+                     ]
+    },
+    {
+        "key":  "ext_blackMarketTariffSneak",
+        "label":  "Black Market Tariff Sneak",
+        "category":  "Markets and income",
+        "type":  "number",
+        "default":  0,
+        "min":  0,
+        "max":  1,
+        "integer":  false,
+        "status":  "live",
+        "description":  "Black-market tariff fraction when sneaking in with the transponder off.",
+        "evidence":  [
+                         "com/fs/starfarer/api/impl/campaign/submarkets/BlackMarketPlugin.java"
+                     ]
+    },
+    {
+        "key":  "ext_militaryMarketRequiresCommission",
+        "label":  "Military Market Requires Commission",
+        "category":  "Missions and progression",
+        "type":  "boolean",
+        "default":  true,
+        "min":  0,
+        "max":  4,
+        "integer":  false,
+        "status":  "live",
+        "description":  "Requires a commission to use military markets when enabled.",
+        "evidence":  [
+                         "com/fs/starfarer/api/impl/campaign/submarkets/MilitarySubmarketPlugin.java"
+                     ]
+    },
+    {
+        "key":  "ext_certainWeaponCooldownsBlockPhaseCloak",
+        "label":  "Certain Weapon Cooldowns Block Phase Cloak",
+        "category":  "Markets and income",
+        "type":  "boolean",
+        "default":  true,
+        "min":  0,
+        "max":  4,
+        "integer":  false,
+        "status":  "unused",
+        "description":  "The shipped settings explicitly mark this setting as unused. No control is offered.",
+        "evidence":  [
+                         "com/fs/starfarer/api/impl/combat/ExtBlockPhaseCloakWhileCoolingDownEffect.java"
+                     ]
+    },
+    {
+        "key":  "ext_strongerAlphaSiteDefenders",
+        "label":  "Stronger Alpha Site Defenders",
+        "category":  "Missions and progression",
+        "type":  "boolean",
+        "default":  true,
+        "min":  0,
+        "max":  4,
+        "integer":  false,
+        "status":  "creation",
+        "description":  "Uses the stronger Alpha Site defenders when that encounter is generated. Existing defenders are unchanged.",
+        "evidence":  [
+                         "com/fs/starfarer/api/impl/campaign/world/MercAbyssExpedition.java",
+                         "com/fs/starfarer/api/impl/campaign/world/TTBlackSite.java"
+                     ]
+    },
+    {
+        "key":  "ext_analyzeMissionRequiresSensorStrength",
+        "label":  "Analyze Mission Requires Sensor Strength",
+        "category":  "Missions and progression",
+        "type":  "boolean",
+        "default":  true,
+        "min":  0,
+        "max":  4,
+        "integer":  false,
+        "status":  "creation",
+        "description":  "Requires extra sensor strength for applicable analysis missions.",
+        "evidence":  [
+                         "com/fs/starfarer/api/impl/campaign/intel/AnalyzeEntityMissionIntel.java"
+                     ]
+    },
+    {
+        "key":  "ext_analyzeMissionSensorStrengthAboveBaseRequired",
+        "label":  "Analyze Mission Sensor Strength Above Base Required",
+        "category":  "Missions and progression",
+        "type":  "number",
+        "default":  200,
+        "min":  0,
+        "max":  800,
+        "integer":  true,
+        "status":  "creation",
+        "description":  "Extra sensor strength above the base required by applicable analysis missions.",
+        "evidence":  [
+                         "com/fs/starfarer/api/impl/campaign/intel/AnalyzeEntityMissionIntel.java"
+                     ]
+    },
+    {
+        "key":  "ext_ZGRTurnInValueMult",
+        "label":  "ZGRTurn In Value Mult",
+        "category":  "Missions and progression",
+        "type":  "number",
+        "default":  0.3,
+        "min":  0,
+        "max":  2,
+        "integer":  false,
+        "status":  "creation",
+        "description":  "Reward value multiplier for turning in the related unique ship. Existing mission rewards may already be fixed.",
+        "evidence":  [
+                         "com/fs/starfarer/api/impl/campaign/rulecmd/salvage/ZGRTurnIn.java"
+                     ]
+    },
+    {
+        "key":  "ext_moreDangerousMkIThreat",
+        "label":  "More Dangerous Mk IThreat",
+        "category":  "Missions and progression",
+        "type":  "boolean",
+        "default":  true,
+        "min":  0,
+        "max":  4,
+        "integer":  false,
+        "status":  "creation",
+        "description":  "Enables the more dangerous Mk I Threat variant when its encounter is generated.",
+        "evidence":  [
+                         "com/fs/starfarer/api/impl/campaign/rulecmd/salvage/MiscCMD.java"
+                     ]
+    },
+    {
+        "key":  "ext_extraSpacerDebtPerLevel",
+        "label":  "Extra Spacer Debt Per Level",
+        "category":  "Career",
+        "type":  "number",
+        "default":  2000,
+        "min":  0,
+        "max":  8000,
+        "integer":  true,
+        "status":  "creation",
+        "description":  "Extra spacer debt in credits per character level.",
+        "evidence":  [
+                         "com/fs/starfarer/api/impl/campaign/tutorial/SpacerObligation.java"
+                     ]
+    },
+    {
+        "key":  "ext_respawnFleetId",
+        "label":  "Respawn Fleet Id",
+        "category":  "Markets and income",
+        "type":  "string",
+        "default":  "ext_respawn",
+        "min":  0,
+        "max":  4,
+        "integer":  false,
+        "status":  "identifier",
+        "description":  "Fleet definition used on respawn. This is an identifier rather than a difficulty number; no slider is offered.",
+        "evidence":  [
+
+                     ]
+    },
+    {
+        "key":  "ext_deliveryMissionHighQuantityChanceMult",
+        "label":  "Delivery Mission High Quantity Chance Mult",
+        "category":  "Missions and progression",
+        "type":  "number",
+        "default":  0.1,
+        "min":  0,
+        "max":  2,
+        "integer":  false,
+        "status":  "creation",
+        "description":  "Chance multiplier for high-quantity delivery offers. Existing missions are unchanged.",
+        "evidence":  [
+                         "com/fs/starfarer/api/impl/campaign/intel/bar/events/DeliveryBarEvent.java"
+                     ]
+    },
+    {
+        "key":  "ext_worseHandMeDownFreighter",
+        "label":  "Worse Hand Me Down Freighter",
+        "category":  "Missions and progression",
+        "type":  "boolean",
+        "default":  true,
+        "min":  0,
+        "max":  4,
+        "integer":  false,
+        "status":  "creation",
+        "description":  "Uses the worse freighter variant for newly generated hand-me-down offers.",
+        "evidence":  [
+                         "com/fs/starfarer/api/impl/campaign/missions/HandMeDownFreighter.java"
+                     ]
+    },
+    {
+        "key":  "ext_worseHandMeDownFreighterPriceMult",
+        "label":  "Worse Hand Me Down Freighter Price Mult",
+        "category":  "Missions and progression",
+        "type":  "number",
+        "default":  2,
+        "min":  0,
+        "max":  8,
+        "integer":  false,
+        "status":  "creation",
+        "description":  "Price multiplier for the worse hand-me-down freighter offer.",
+        "evidence":  [
+                         "com/fs/starfarer/api/impl/campaign/missions/HandMeDownFreighter.java"
+                     ]
+    },
+    {
+        "key":  "ext_hijackedShipCostMult",
+        "label":  "Hijacked Ship Cost Mult",
+        "category":  "Missions and progression",
+        "type":  "number",
+        "default":  2,
+        "min":  0,
+        "max":  8,
+        "integer":  false,
+        "status":  "creation",
+        "description":  "Price multiplier for newly generated hijacked-ship offers.",
+        "evidence":  [
+                         "com/fs/starfarer/api/impl/campaign/missions/HijackingMission.java"
+                     ]
+    },
+    {
+        "key":  "ext_surplusHullPriceMult",
+        "label":  "Surplus Hull Price Mult",
+        "category":  "Missions and progression",
+        "type":  "number",
+        "default":  2,
+        "min":  0,
+        "max":  8,
+        "integer":  false,
+        "status":  "creation",
+        "description":  "Price multiplier for newly generated surplus-hull offers.",
+        "evidence":  [
+                         "com/fs/starfarer/api/impl/campaign/missions/SurplusShipHull.java"
+                     ]
+    },
+    {
+        "key":  "ext_reduceLegionXIVSpawns",
+        "label":  "Reduce Legion XIVSpawns",
+        "category":  "Missions and progression",
+        "type":  "boolean",
+        "default":  true,
+        "min":  0,
+        "max":  4,
+        "integer":  false,
+        "status":  "creation",
+        "description":  "Reduces special XIV Legion wreck spawns during sector generation. Existing wrecks are unchanged.",
+        "evidence":  [
+                         "com/fs/starfarer/api/impl/campaign/procgen/themes/MiscellaneousThemeGenerator.java"
+                     ]
+    },
+    {
+        "key":  "ext_reduceDerelictQuality",
+        "label":  "Reduce Derelict Quality",
+        "category":  "Salvage and recovery",
+        "type":  "boolean",
+        "default":  true,
+        "min":  0,
+        "max":  4,
+        "integer":  false,
+        "status":  "creation",
+        "description":  "Reduces the quality of generated derelicts. Existing wrecks are unchanged.",
+        "evidence":  [
+                         "com/fs/starfarer/api/impl/campaign/DerelictShipEntityPlugin.java",
+                         "com/fs/starfarer/api/impl/campaign/procgen/themes/MiscellaneousThemeGenerator.java",
+                         "com/fs/starfarer/api/impl/campaign/rulecmd/salvage/special/ShipRecoverySpecial.java",
+                         "data/scripts/world/systems/Galatia.java"
+                     ]
+    },
+    {
+        "key":  "ext_shipForSaleQualityMod",
+        "label":  "Ship For Sale Quality Mod",
+        "category":  "Markets and income",
+        "type":  "number",
+        "default":  -0.35,
+        "min":  -1,
+        "max":  1,
+        "integer":  false,
+        "status":  "creation",
+        "description":  "Additive quality modifier for newly generated sale ships. More negative values generally mean poorer condition.",
+        "evidence":  [
+                         "com/fs/starfarer/api/impl/campaign/missions/HijackingMission.java",
+                         "com/fs/starfarer/api/impl/campaign/missions/SurplusShipHull.java",
+                         "com/fs/starfarer/api/impl/campaign/submarkets/BaseSubmarketPlugin.java"
+                     ]
+    },
+    {
+        "key":  "ext_probOfForcingBadDerelictCondition",
+        "label":  "Prob Of Forcing Bad Derelict Condition",
+        "category":  "Salvage and recovery",
+        "type":  "number",
+        "default":  0,
+        "min":  0,
+        "max":  1,
+        "integer":  false,
+        "status":  "creation",
+        "description":  "Probability of forcing bad condition on a generated derelict. 0 disables the extra forced downgrade; 1 always applies it.",
+        "evidence":  [
+                         "com/fs/starfarer/api/impl/campaign/procgen/themes/SalvageSpecialAssigner.java"
+                     ]
+    },
+    {
+        "key":  "ext_cargoScanFindContrabandMult",
+        "label":  "Cargo Scan Find Contraband Mult",
+        "category":  "Fleet and travel",
+        "type":  "number",
+        "default":  2,
+        "min":  0,
+        "max":  8,
+        "integer":  false,
+        "status":  "live",
+        "description":  "Multiplier on contraband detection during cargo scans.",
+        "evidence":  [
+                         "com/fs/starfarer/api/impl/campaign/rulecmd/CargoScan.java"
+                     ]
+    },
+    {
+        "key":  "ext_cargoScanNumShipsMult",
+        "label":  "Cargo Scan Num Ships Mult",
+        "category":  "Fleet and travel",
+        "type":  "number",
+        "default":  4,
+        "min":  0,
+        "max":  16,
+        "integer":  false,
+        "status":  "live",
+        "description":  "Multiplier on the number of ships affected by cargo scans.",
+        "evidence":  [
+                         "com/fs/starfarer/api/impl/campaign/rulecmd/CargoScan.java"
+                     ]
+    },
+    {
+        "key":  "ext_cargoScanShipDamageMult",
+        "label":  "Cargo Scan Ship Damage Mult",
+        "category":  "Fleet and travel",
+        "type":  "number",
+        "default":  2,
+        "min":  0,
+        "max":  8,
+        "integer":  false,
+        "status":  "live",
+        "description":  "Ship damage multiplier from cargo scans.",
+        "evidence":  [
+                         "com/fs/starfarer/api/impl/campaign/rulecmd/CargoScanApplyResult.java"
+                     ]
+    },
+    {
+        "key":  "ext_environmentalDamageMult",
+        "label":  "Environmental Damage Mult",
+        "category":  "Fleet and travel",
+        "type":  "number",
+        "default":  2,
+        "min":  0,
+        "max":  8,
+        "integer":  false,
+        "status":  "live",
+        "description":  "Damage multiplier from hazards such as hyperstorm strikes and asteroid impacts.",
+        "evidence":  [
+                         "com/fs/starfarer/api/impl/campaign/terrain/AsteroidImpact.java",
+                         "com/fs/starfarer/api/impl/campaign/terrain/HyperspaceTerrainPlugin.java"
+                     ],
+        "presetReference":  1
+    },
+    {
+        "key":  "ext_transverseJumpDamageMult",
+        "label":  "Transverse Jump Damage Mult",
+        "category":  "Fleet and travel",
+        "type":  "number",
+        "default":  10,
+        "min":  0,
+        "max":  40,
+        "integer":  false,
+        "status":  "live",
+        "description":  "Combat-readiness damage multiplier for Transverse Jump. 10 means ten times the normal CR damage.",
+        "evidence":  [
+                         "com/fs/starfarer/api/impl/campaign/abilities/FractureJumpAbility.java"
+                     ],
+        "presetReference":  1
+    },
+    {
+        "key":  "ext_timeBasedThingsDelayFactor",
+        "label":  "Time Based Things Delay Factor",
+        "category":  "Missions and progression",
+        "type":  "number",
+        "default":  3,
+        "min":  0,
+        "max":  12,
+        "integer":  false,
+        "status":  "creation",
+        "description":  "Delays selected time-based escalation, including pirate raids and fleet-strength growth. Higher values postpone escalation.",
+        "evidence":  [
+                         "com/fs/starfarer/api/impl/campaign/Tuning.java"
+                     ]
+    },
+    {
+        "key":  "ext_surveyCrewMult",
+        "label":  "Survey Crew Mult",
+        "category":  "Fleet and travel",
+        "type":  "number",
+        "default":  1.5,
+        "min":  0,
+        "max":  6,
+        "integer":  false,
+        "status":  "live",
+        "description":  "Crew requirement multiplier for planetary surveys. Required crew are not necessarily consumed.",
+        "evidence":  [
+                         "com/fs/starfarer/api/impl/campaign/SurveyPluginImpl.java"
+                     ],
+        "presetReference":  1
+    },
+    {
+        "key":  "ext_surveyMachineryMult",
+        "label":  "Survey Machinery Mult",
+        "category":  "Fleet and travel",
+        "type":  "number",
+        "default":  1.5,
+        "min":  0,
+        "max":  6,
+        "integer":  false,
+        "status":  "live",
+        "description":  "Heavy-machinery requirement multiplier for surveys. Required machinery is not necessarily consumed.",
+        "evidence":  [
+                         "com/fs/starfarer/api/impl/campaign/SurveyPluginImpl.java"
+                     ],
+        "presetReference":  1
+    },
+    {
+        "key":  "ext_surveySuppliesMult",
+        "label":  "Survey Supplies Mult",
+        "category":  "Fleet and travel",
+        "type":  "number",
+        "default":  1,
+        "min":  0,
+        "max":  4,
+        "integer":  false,
+        "status":  "live",
+        "description":  "Supply cost multiplier for planetary surveys.",
+        "evidence":  [
+                         "com/fs/starfarer/api/impl/campaign/SurveyPluginImpl.java"
+                     ]
+    },
+    {
+        "key":  "ext_establishColonyCrew",
+        "label":  "Establish Colony Crew",
+        "category":  "Colonies",
+        "type":  "number",
+        "default":  1000,
+        "min":  0,
+        "max":  4000,
+        "integer":  true,
+        "status":  "creation",
+        "description":  "Crew required to establish a colony.",
+        "evidence":  [
+                         "com/fs/starfarer/api/impl/campaign/SurveyPluginImpl.java"
+                     ]
+    },
+    {
+        "key":  "ext_establishColonyMachinery",
+        "label":  "Establish Colony Machinery",
+        "category":  "Colonies",
+        "type":  "number",
+        "default":  200,
+        "min":  0,
+        "max":  800,
+        "integer":  true,
+        "status":  "creation",
+        "description":  "Heavy machinery required to establish a colony.",
+        "evidence":  [
+                         "com/fs/starfarer/api/impl/campaign/SurveyPluginImpl.java"
+                     ]
+    },
+    {
+        "key":  "ext_establishColonySupplies",
+        "label":  "Establish Colony Supplies",
+        "category":  "Colonies",
+        "type":  "number",
+        "default":  500,
+        "min":  0,
+        "max":  2000,
+        "integer":  true,
+        "status":  "creation",
+        "description":  "Supplies required to establish a colony.",
+        "evidence":  [
+                         "com/fs/starfarer/api/impl/campaign/SurveyPluginImpl.java"
+                     ]
+    },
+    {
+        "key":  "ext_industryCostMult",
+        "label":  "Industry Cost Mult",
+        "category":  "Colonies",
+        "type":  "number",
+        "default":  2,
+        "min":  0,
+        "max":  8,
+        "integer":  false,
+        "status":  "live",
+        "description":  "Industry construction cost multiplier. Existing queued construction may retain its original cost.",
+        "evidence":  [
+                         "starfarer_obf.jar: loading/specs/H.getCost (dynamic getter inspected with javap)"
+                     ],
+        "presetReference":  1
+    },
+    {
+        "key":  "ext_industryBuiltTimeMult",
+        "label":  "Industry Built Time Mult",
+        "category":  "Colonies",
+        "type":  "number",
+        "default":  2,
+        "min":  0,
+        "max":  8,
+        "integer":  false,
+        "status":  "live",
+        "description":  "Industry construction time multiplier. Existing build progress is not rewound.",
+        "evidence":  [
+                         "starfarer_obf.jar: loading/specs/H.getBuildTime (dynamic getter inspected with javap)"
+                     ],
+        "presetReference":  1
+    },
+    {
+        "key":  "ext_missionRewardMinDist",
+        "label":  "Mission Reward Min Dist",
+        "category":  "Missions and progression",
+        "type":  "number",
+        "default":  10,
+        "min":  0,
+        "max":  40,
+        "integer":  false,
+        "status":  "future",
+        "description":  "Travel distance in light-years where the distance reward bonus starts. Must not exceed the maximum distance.",
+        "evidence":  [
+                         "com/fs/starfarer/api/util/Misc.java:getMissionDistanceRewardMult (prefix + key)"
+                     ]
+    },
+    {
+        "key":  "ext_missionRewardMaxDist",
+        "label":  "Mission Reward Max Dist",
+        "category":  "Missions and progression",
+        "type":  "number",
+        "default":  32,
+        "min":  0,
+        "max":  128,
+        "integer":  false,
+        "status":  "future",
+        "description":  "Travel distance in light-years where the distance reward bonus reaches its maximum.",
+        "evidence":  [
+                         "com/fs/starfarer/api/util/Misc.java:getMissionDistanceRewardMult (prefix + key)"
+                     ]
+    },
+    {
+        "key":  "ext_missionRewardMaxBonusFraction",
+        "label":  "Mission Reward Max Bonus Fraction",
+        "category":  "Missions and progression",
+        "type":  "number",
+        "default":  0.65,
+        "min":  0,
+        "max":  3,
+        "integer":  false,
+        "status":  "future",
+        "description":  "Maximum distance-based reward bonus fraction. 0.65 means up to 65% extra.",
+        "evidence":  [
+                         "com/fs/starfarer/api/util/Misc.java:getMissionDistanceRewardMult (prefix + key)"
+                     ]
+    },
+    {
+        "key":  "ext_missionRewardBonusCap",
+        "label":  "Mission Reward Bonus Cap",
+        "category":  "Missions and progression",
+        "type":  "number",
+        "default":  150000,
+        "min":  0,
+        "max":  600000,
+        "integer":  true,
+        "status":  "future",
+        "description":  "Maximum distance-based mission reward bonus in credits.",
+        "evidence":  [
+                         "com/fs/starfarer/api/util/Misc.java:getMissionDistanceRewardMult (prefix + key)"
+                     ]
+    },
+    {
+        "key":  "ext_storyPointsPerLevel",
+        "label":  "Story Points Per Level",
+        "category":  "Missions and progression",
+        "type":  "number",
+        "default":  2,
+        "min":  1,
+        "max":  20,
+        "integer":  true,
+        "status":  "creation",
+        "description":  "Story points granted per future level gained below the level cap. Does not change previously awarded points.",
+        "evidence":  [
+                         "data/scripts/plugins/LevelupPluginImpl.java"
+                     ]
+    },
+    {
+        "key":  "ext_storyPointsPerLevelAtMaxLevel",
+        "label":  "Story Points Per Level At Max Level",
+        "category":  "Missions and progression",
+        "type":  "number",
+        "default":  4,
+        "min":  1,
+        "max":  20,
+        "integer":  true,
+        "status":  "creation",
+        "description":  "Story points awarded for future XP level intervals at maximum level.",
+        "evidence":  [
+                         "data/scripts/plugins/LevelupPluginImpl.java"
+                     ]
+    },
+    {
+        "key":  "ext_bonusXP_cleanDisengage",
+        "label":  "Bonus XP clean Disengage",
+        "category":  "Missions and progression",
+        "type":  "number",
+        "default":  0,
+        "min":  0,
+        "max":  2,
+        "integer":  false,
+        "status":  "future",
+        "description":  "Bonus-XP fraction attached to the clean-disengagement story option.",
+        "evidence":  [
+                         "starfarer_obf.jar: StarfarerSettings bonus-XP getter (ext_bonusXP_ + action, inspected with javap)"
+                     ]
+    },
+    {
+        "key":  "ext_bonusXP_avoidCargoScan",
+        "label":  "Bonus XP avoid Cargo Scan",
+        "category":  "Fleet and travel",
+        "type":  "number",
+        "default":  0.5,
+        "min":  0,
+        "max":  2,
+        "integer":  false,
+        "status":  "future",
+        "description":  "Bonus-XP fraction attached to the avoid-cargo-scan story option.",
+        "evidence":  [
+                         "starfarer_obf.jar: StarfarerSettings bonus-XP getter (ext_bonusXP_ + action, inspected with javap)"
+                     ]
+    },
+    {
+        "key":  "ext_bonusXP_convinceOfficer",
+        "label":  "Bonus XP convince Officer",
+        "category":  "Missions and progression",
+        "type":  "number",
+        "default":  0.75,
+        "min":  0,
+        "max":  3,
+        "integer":  false,
+        "status":  "future",
+        "description":  "Bonus-XP fraction attached to the convince-officer story option.",
+        "evidence":  [
+                         "starfarer_obf.jar: StarfarerSettings bonus-XP getter (ext_bonusXP_ + action, inspected with javap)"
+                     ]
+    },
+    {
+        "key":  "ext_bonusXP_recoverNoBonusXPDeploymentPoints",
+        "label":  "Bonus XP recover No Bonus XPDeployment Points",
+        "category":  "Salvage and recovery",
+        "type":  "number",
+        "default":  5,
+        "min":  0,
+        "max":  20,
+        "integer":  true,
+        "status":  "future",
+        "description":  "Deployment-point threshold used for ship-recovery bonus-XP calculations.",
+        "evidence":  [
+                         "starfarer_obf.jar: StarfarerSettings bonus-XP getter (ext_bonusXP_ + action, inspected with javap)"
+                     ]
+    },
+    {
+        "key":  "ext_recoveryNonOwnSPCost",
+        "label":  "Recovery Non Own SPCost",
+        "category":  "Salvage and recovery",
+        "type":  "array",
+        "default":  [
+                        1,
+                        1,
+                        2,
+                        4
+                    ],
+        "min":  1,
+        "max":  20,
+        "integer":  true,
+        "status":  "live",
+        "description":  "Story-point recovery cost for ships that were not yours, by hull size.",
+        "evidence":  [
+                         "starfarer_obf.jar: ui/newui/FleetMemberRecoveryDialog.getSPToRecoverMember (dynamic getter inspected with javap)"
+                     ]
+    },
+    {
+        "key":  "ext_recoveryNonOwnSPCostCiv",
+        "label":  "Recovery Non Own SPCost Civ",
+        "category":  "Salvage and recovery",
+        "type":  "array",
+        "default":  [
+                        1,
+                        1,
+                        1,
+                        2
+                    ],
+        "min":  1,
+        "max":  20,
+        "integer":  true,
+        "status":  "live",
+        "description":  "Story-point recovery cost for civilian ships that were not yours, by hull size.",
+        "evidence":  [
+                         "starfarer_obf.jar: ui/newui/FleetMemberRecoveryDialog.getSPToRecoverMember (dynamic getter inspected with javap)"
+                     ]
+    }
+]

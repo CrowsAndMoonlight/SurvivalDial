@@ -1,0 +1,10 @@
+{
+  "id": "survival_dial",
+  "name": "Survival Dial",
+  "author": "David",
+  "version": "0.1.1",
+  "description": "Tune Extended / Survival mode with explained sliders and difficulty presets, during character creation or with Ctrl+F8 in the campaign.",
+  "gameVersion": "0.98.5a-RC7",
+  "jars": ["jars/survival-dial.jar"],
+  "modPlugin": "survivaldial.SurvivalDialPlugin"
+}

@@ -1,0 +1,5 @@
+id,trigger,conditions,script,text,options,notes
+onNewGameCreationStartExt,BeginNewGameCreationExt,,SDStart,,,
+sdContinueExt,SDContinueExt,,"$extendedMode = true
+NGCAddCredits 2000
+FireAll InitNewGameChoices",,,
