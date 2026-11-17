@@ -22,11 +22,12 @@ public final class SettingsModel {
         public final Double reference;
         public Entry(JSONObject row) throws JSONException {
             key=row.getString("key"); label=row.getString("label"); category=row.getString("category");
-            if(!key.startsWith("ext_")) throw new IllegalArgumentException("Only Extended-mode settings are allowed: "+key);
+            if(!key.startsWith("ext_") && !key.equals(CloudCoverage.KEY)) throw new IllegalArgumentException("Only Extended-mode settings are allowed: "+key);
             type=row.getString("type"); status=row.getString("status"); description=row.getString("description");
             vanilla=row.get("default"); min=row.getDouble("min"); max=row.getDouble("max");
             integer=row.getBoolean("integer"); reference=row.has("presetReference") ? row.getDouble("presetReference") : null;
         }
+        public boolean gameSetting() { return key.startsWith("ext_"); }
         public boolean supported() { return status.equals("live") || status.equals("future") || status.equals("creation"); }
         public boolean editable(boolean creation) { return supported() && (creation || !status.equals("creation")); }
         public String tooltip() {
@@ -45,8 +46,9 @@ public final class SettingsModel {
         JSONArray rows = new JSONArray(Global.getSettings().loadText("data/config/survival_dial_catalog.json", "survival_dial"));
         entries.clear();
         for(int i=0;i<rows.length();i++) entries.add(new Entry(rows.getJSONObject(i)));
+        entries.add(CloudCoverage.entry());
         baseline = new JSONObject();
-        for(Entry e:entries) baseline.put(e.key, Global.getSettings().getSettingsJSON().get(e.key));
+        for(Entry e:entries) baseline.put(e.key, e.gameSetting() ? Global.getSettings().getSettingsJSON().get(e.key) : e.vanilla);
         baseline=copy(baseline);
         overridesActive=false;
     }
@@ -83,6 +85,7 @@ public final class SettingsModel {
                 int offset=name.equals("Easy") ? 20 : name.equals("Medium") ? 10 : name.equals("Insane") ? -5 : 0;
                 value=((Number)e.vanilla).intValue()+offset;
             }
+            if(e.key.equals(CloudCoverage.KEY)) value=name.equals("Easy")?50:name.equals("Medium")?75:name.equals("Insane")?125:100;
             result.put(e.key,value);
         }
         validate(result);
@@ -140,12 +143,12 @@ public final class SettingsModel {
         JSONObject target=settings.getSettingsJSON();
         JSONObject before=new JSONObject();
         JSONObject detached=copy(profile);
-        for(Entry e:entries) if(e.supported()) before.put(e.key,target.get(e.key));
+        for(Entry e:entries) if(e.supported() && e.gameSetting()) before.put(e.key,target.get(e.key));
         try {
-            for(Entry e:entries) if(e.supported()) target.put(e.key,detached.get(e.key));
+            for(Entry e:entries) if(e.supported() && e.gameSetting()) target.put(e.key,detached.get(e.key));
             settings.resetCached();
         } catch(Exception failure) {
-            for(Entry e:entries) if(e.supported()) target.put(e.key,before.get(e.key));
+            for(Entry e:entries) if(e.supported() && e.gameSetting()) target.put(e.key,before.get(e.key));
             settings.resetCached();
             throw failure;
         }

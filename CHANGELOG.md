@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.1.2 - clouds and hazards
+
+- Add new-campaign hyperspace cloud coverage targets: Easy 50%, Medium 75%, Hard 100%, Insane 125%, with an optional 0-125% slider.
+- Keep Hard, Normal campaigns, and existing maps unchanged. Increased coverage is limited by protected clear areas.
+- Expose hazard damage in common controls and the preset table: 1.25x / 1.6x / 2x / 3x Normal damage.
+- Mark new-game-only table rows with an asterisk, including commission income, story points, retirement, and cloud coverage.
+- Correct the preset explanation to reflect retirement and cloud adjustments.
+
 ## 0.1.1 - simpler menu
 
 - Show presets first, with optional common controls and a separate full-settings menu.

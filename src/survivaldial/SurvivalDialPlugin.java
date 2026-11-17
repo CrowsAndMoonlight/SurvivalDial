@@ -19,6 +19,11 @@ public class SurvivalDialPlugin extends BaseModPlugin {
             } else SettingsModel.restore();
         } catch(Exception e) { throw new RuntimeException("Survival Dial: new-game settings failed",e); }
     }
+    @Override public void onNewGameAfterProcGen() {
+        try {
+            if(Global.getSector().isExtMode()) CloudCoverage.applyNewCampaign(SettingsModel.current());
+        } catch(Exception e) { throw new RuntimeException("Survival Dial: cloud generation failed",e); }
+    }
     @Override public void onGameLoad(boolean newGame) {
         try {
             SettingsModel.pending=null;

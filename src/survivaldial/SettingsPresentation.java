@@ -8,7 +8,7 @@ import org.json.*;
 public final class SettingsPresentation {
     public static final String[] COMMON={"shipBuyPriceMult","weaponPriceMult","fighterPriceMult",
         "crewSalaryMult","fuelPriceMult","fuelCapacityMult","fuelCapacityMultTanker","fuelUseMult",
-        "commissionMonthlyIncomeMult","shipRecoverableFraction","storyPointsPerLevel","retirementMinCycles"};
+        "commissionMonthlyIncomeMult","shipRecoverableFraction","storyPointsPerLevel","retirementMinCycles","environmentalDamageMult",CloudCoverage.KEY};
     private static final Set<String> NEUTRAL=new HashSet<String>(Arrays.asList(
         "jumpPayMult","pristineShipSellPriceMult","fuelUseMultCiv","commissionBountyMult",
         "suppliesPriceMult","officerSalaryMult","surveySuppliesMult","militaryMarketTariff",
@@ -52,7 +52,7 @@ public final class SettingsPresentation {
         };
         for(String[] pair:names)NAMES.put(pair[0],pair[1]);
     }
-    public static String shortKey(SettingsModel.Entry e){return e.key.substring(4);}
+    public static String shortKey(SettingsModel.Entry e){return e.key.equals(CloudCoverage.KEY)?"hyperspaceCloudCoverage":e.key.substring(4);}
     public static String name(SettingsModel.Entry e){
         String result=NAMES.get(shortKey(e));
         if(result!=null)return result;
@@ -92,6 +92,7 @@ public final class SettingsPresentation {
     public static String normal(SettingsModel.Entry e){
         String k=shortKey(e);
         if(k.equals("retirementMinCycles") || k.equals("retirementMaxCycles"))return "No forced retirement";
+        if(k.equals("hyperspaceCloudCoverage"))return "100% of generated cloud coverage";
         if(k.equals("storyPointsPerLevel"))return "4";
         if(k.equals("normalTariff"))return "0.3 (30%, standard market)";
         if(k.equals("blackMarketTariff"))return "0 (no bribe)";

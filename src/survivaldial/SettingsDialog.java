@@ -75,7 +75,7 @@ public final class SettingsDialog implements InteractionDialogPlugin {
             back(creation?"Continue without changes":"Cancel","cancel");
         }else if(screen==Screen.PRESETS){
             dialog.getTextPanel().addPara("Pick a starting point. You can change individual settings afterwards.");
-            dialog.getTextPanel().addPara("Presets adjust costs and scarcity. Story-point gains and retirement stay at the game's Survival defaults. In an existing campaign, new-game-only choices are preserved.");
+            dialog.getTextPanel().addPara("Presets adjust costs, scarcity, hazard damage, retirement timing, and hyperspace cloud coverage. Story points stay at 2 per level. In an existing campaign, new-game-only choices are preserved.");
             for(String name:SettingsModel.PRESETS)options.addOption(name+(name.equals("Hard")?" (default)":"")+" - "+SettingsPresentation.presetDescription(name),"preset:"+name,
                 "Replaces editable settings with this preset. Review the pending changes before applying. Hard also clears earlier custom values on settings hidden from the simplified menu.");
             back("Back","home");

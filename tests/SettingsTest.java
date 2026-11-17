@@ -43,7 +43,7 @@ public class SettingsTest {
         int beforeNormal=resets[0];extended[0]=false;new SurvivalDialPlugin().onGameLoad(false);
         check(resets[0]==beforeNormal && hotkeys[0]==0 && persistent.isEmpty(),"Normal-only session has no overrides, hotkeys, or save data");
         extended[0]=true;
-        check(SettingsModel.entries.size()==143,"all shipped settings catalogued");
+        check(SettingsModel.entries.size()==144,"143 shipped settings plus the mod cloud control");
         JSONObject hard=SettingsModel.preset(SettingsModel.baseline(),"Hard",true);
         SettingsModel.validate(hard);
         for(SettingsModel.Entry e:SettingsModel.entries){
@@ -171,7 +171,26 @@ public class SettingsTest {
         check(picked[0].getDouble("ext_retirementMinCycles")==25,"invalid range never enters pending profile");
         String table=PresetTable.render(hard);
         check(table.contains("**Hard (default)**") && table.contains("| Weapon prices | 3.25x | 6.4x | 10x | 15x |"),"README values generated from real preset model");
-        check(table.contains("| Retirement window | 45-50 cycles | 35-40 cycles | 25-30 cycles | 20-25 cycles |"),"README shows requested retirement windows");
+        check(table.contains("| Retirement window* | 45-50 cycles | 35-40 cycles | 25-30 cycles | 20-25 cycles |"),"README shows requested retirement windows");
+        check(table.contains("| Hazard damage | 1.25x | 1.6x | 2x | 3x |"),"README hazard values match presets");
+        check(table.contains("| Hyperspace cloud coverage target* | 50% | 75% | 100% | 125% |"),"README cloud targets match presets");
+        check(table.contains("| Commission income* |") && table.contains("| Story points per level* |") && table.contains("New-game setup only"),"all creation-only table rows marked");
+        int[] cloudTargets={50,75,100,125};double[] hazards={1.25,1.6,2,3};
+        JSONObject customClouds=SettingsModel.copy(hard);customClouds.put(CloudCoverage.KEY,60);
+        for(int i=0;i<SettingsModel.PRESETS.length;i++){
+            JSONObject fresh=SettingsModel.preset(customClouds,SettingsModel.PRESETS[i],true);
+            check(fresh.getInt(CloudCoverage.KEY)==cloudTargets[i] && fresh.getDouble("ext_environmentalDamageMult")==hazards[i],"agreed cloud and hazard preset values");
+            JSONObject liveClouds=SettingsModel.preset(customClouds,SettingsModel.PRESETS[i],false);
+            check(liveClouds.getInt(CloudCoverage.KEY)==60,"live presets preserve cloud generation setting");
+        }
+        simple=new SettingsDialog(hard,false,null);simple.init(ui);simple.optionSelected(null,"edit:"+CloudCoverage.KEY);
+        check(labels.size()==1 && labels.containsKey("discardItem"),"cloud slider disabled in existing campaigns");
+        JSONObject[] cloudPicked={null};simple=new SettingsDialog(hard,true,p->cloudPicked[0]=p);simple.init(ui);
+        simple.optionSelected(null,"edit:"+CloudCoverage.KEY);selectors.put("value0",60f);simple.optionSelected(null,"keep");simple.optionSelected(null,"apply");
+        check(cloudPicked[0].getInt(CloudCoverage.KEY)==60,"custom cloud percentage accepted during new-game setup");
+        customClouds.put(CloudCoverage.KEY,126);rejects(()->SettingsModel.validate(customClouds),"coverage above slider limit rejected");
+        customClouds.put(CloudCoverage.KEY,-1);rejects(()->SettingsModel.validate(customClouds),"negative coverage rejected");
+        assertions+=CloudCoverageTest.run();
         if(args.length>1)Files.writeString(Path.of(args[1]),table);
         System.out.println("PASS: "+assertions+" assertions (catalog, presets, validation, rollback, save isolation, native dialog Apply/Cancel)");
     }

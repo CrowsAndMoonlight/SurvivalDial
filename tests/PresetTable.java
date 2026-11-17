@@ -13,22 +13,27 @@ public final class PresetTable {
             {"Fuel price","fuelPriceMult","x"},{"Ship fuel capacity","fuelCapacityMult","%"},
             {"Tanker fuel capacity","fuelCapacityMultTanker","%"},
             {"Fuel use (frigate / destroyer / cruiser / capital)","fuelUseMult","x"},
+                        {"Hazard damage","environmentalDamageMult","x"},
+            {"Hyperspace cloud coverage target",CloudCoverage.KEY,"percentValue"},
             {"Commission income","commissionMonthlyIncomeMult","%"},
             {"Post-battle ship recovery factor","shipRecoverableFraction","%"},
             {"Story points per level","storyPointsPerLevel",""},{"Retirement window","retirementMinCycles","cycles"}
         };
         StringBuilder table=new StringBuilder("| Setting | Easy | Medium | **Hard (default)** | Insane |\n| --- | --- | --- | --- | --- |\n");
         for(String[] row:rows){
-            table.append("| ").append(row[0]);
+            SettingsModel.Entry entry=SettingsPresentation.find(row[1]);
+            table.append("| ").append(row[0]).append(entry.status.equals("creation")?"*":"");
             for(JSONObject p:presets){
-                Object value=p.get("ext_"+row[1]);String text;
+                Object value=p.get(entry.key);String text;
                 if(row[2].equals("cycles"))text=SettingsPresentation.value(value)+"-"+SettingsPresentation.value(p.get("ext_retirementMaxCycles"))+" cycles";
+                else if(row[2].equals("percentValue"))text=SettingsPresentation.value(value)+"%";
                 else if(row[2].equals("%"))text=SettingsPresentation.number(Math.round(((Number)value).doubleValue()*10000d)/100d)+"%";
                 else text=SettingsPresentation.value(value)+row[2];
                 table.append(" | ").append(text);
             }
             table.append(" |\n");
         }
+        table.append("\n\\* New-game setup only; changing presets during play preserves these settings.\n");
         return table.toString();
     }
 }

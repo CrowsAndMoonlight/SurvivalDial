@@ -15,4 +15,7 @@ Before publishing:
 9. Test invalid bounds and restore Hard. Check new-game-only controls are disabled during play and live presets preserve them.
 10. Test the user's actual mod list, especially Nexerelin's separate creation flow and mods affecting the same settings. Inspect `starsector.log` after each scenario.
 
+11. Generate new Survival campaigns with the same seed at 50%, 75%, 100%, and 125% cloud coverage. Check the logged before/after counts, visible cloud coverage, protected system entrances/abyss, and cloud interaction while flying. Confirm 100% and Normal mode leave the vanilla map unchanged. Try 0% and a custom percentage.
+12. Save/reload an adjusted campaign and check that cloud coverage is preserved without being applied again. Load a pre-0.1.2 save and verify the map stays unchanged. Restart without the mod and confirm the generated terrain still loads.
+
 Do not label the release fully tested until these checks have been run in-game. Record game build, active mods, UI scale, results, and any settings whose observed effect differs from the audit.

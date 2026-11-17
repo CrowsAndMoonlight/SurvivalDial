@@ -15,12 +15,17 @@ Make Starsector's Survival / Extended mode as forgiving or demanding as you like
 | Ship fuel capacity | 87.5% | 70% | 50% | 33.33% |
 | Tanker fuel capacity | 83.75% | 61% | 35% | 23.33% |
 | Fuel use (frigate / destroyer / cruiser / capital) | 1 / 1 / 1.125 / 1.25x | 1 / 1 / 1.3 / 1.6x | 1 / 1 / 1.5 / 2x | 1 / 1 / 2.25 / 3x |
-| Commission income | 77.5% | 46% | 10% | 6.67% |
+| Hazard damage | 1.25x | 1.6x | 2x | 3x |
+| Hyperspace cloud coverage target* | 50% | 75% | 100% | 125% |
+| Commission income* | 77.5% | 46% | 10% | 6.67% |
 | Post-battle ship recovery factor | 80% | 52% | 20% | 13.33% |
-| Story points per level | 2 | 2 | 2 | 2 |
-| Retirement window | 45-50 cycles | 35-40 cycles | 25-30 cycles | 20-25 cycles |
+| Story points per level* | 2 | 2 | 2 | 2 |
+| Retirement window* | 45-50 cycles | 35-40 cycles | 25-30 cycles | 20-25 cycles |
+
+\* New-game setup only; changing presets during play preserves these settings.
 
 <!-- presets:end -->
+
 **Want more control?** Open **Customize → All Settings** to also adjust:
 
 - **Markets:** stock availability, resale values, storage costs, hullmod and Domain-grade Parts prices, tariffs, and black-market bribes.
@@ -32,11 +37,11 @@ Make Starsector's Survival / Extended mode as forgiving or demanding as you like
 
 Some controls are available only during new-game setup; others affect future stock or rewards. Each control explains when it takes effect.
 
-Multipliers and percentages are relative to Normal mode; recovery is a modifier, not a guaranteed recovery chance. These are selected new-campaign preset values. Story points stay at 2 per level unless customized. Retirement timing applies to new campaigns only. Hard restores vanilla Survival settings.
+Price, fuel, income, recovery, and hazard values are relative to Normal mode; recovery is a modifier, not a guaranteed recovery chance. These are selected new-campaign preset values. Story points stay at 2 per level unless customized. Cloud coverage is a new-game target relative to the generated map; increases are limited by protected clear areas. It changes cloud coverage, not lightning frequency. Generated cloud changes remain if the mod is removed. Hard restores vanilla Survival settings.
 
 ## Install
 
-1. Download **SurvivalDial-0.1.1.zip** from this repository's **Releases**.
+1. Download **SurvivalDial-0.1.2.zip** from this repository's **Releases**.
 2. Extract it into `Starsector/mods` so you have `mods/SurvivalDial/mod_info.json`.
 3. Enable **Survival Dial** in the launcher and start the game.
 
