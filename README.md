@@ -21,6 +21,16 @@ Make Starsector's Survival / Extended mode as forgiving or demanding as you like
 | Retirement window | 45-50 cycles | 35-40 cycles | 25-30 cycles | 20-25 cycles |
 
 <!-- presets:end -->
+**Want more control?** Open **Customize → All Settings** to also adjust:
+
+- **Markets:** stock availability, resale values, storage costs, hullmod and Domain-grade Parts prices, tariffs, and black-market bribes.
+- **Personnel and support:** marine hiring and wages, officer combat pay, officer/admin availability, the Academy stipend, and task-force/resupply costs.
+- **Salvage:** loot amounts, AI-core and special-item drops, wreck quality, and story-point ship recovery costs.
+- **Colonies:** construction costs and time, growth, corruption, founding resources, stockpiles, and custom production limits.
+- **Travel and encounters:** survey requirements, hazard and Transverse Jump damage, cargo scans, mission requirements, and selected encounter difficulty.
+- **Career:** rejuvenation bills, spacer spending and debt, story points after the level cap, and bonus XP for selected story-point actions.
+
+Some controls are available only during new-game setup; others affect future stock or rewards. Each control explains when it takes effect.
 
 Multipliers and percentages are relative to Normal mode; recovery is a modifier, not a guaranteed recovery chance. These are selected new-campaign preset values. Story points stay at 2 per level unless customized. Retirement timing applies to new campaigns only. Hard restores vanilla Survival settings.
 
