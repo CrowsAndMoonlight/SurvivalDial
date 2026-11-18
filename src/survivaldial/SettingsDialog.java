@@ -4,6 +4,9 @@ import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.campaign.*;
 import com.fs.starfarer.api.campaign.rules.MemoryAPI;
 import com.fs.starfarer.api.combat.EngagementResultAPI;
+import com.fs.starfarer.api.ui.CustomPanelAPI;
+import com.fs.starfarer.api.ui.TextFieldAPI;
+import com.fs.starfarer.api.ui.TooltipMakerAPI;
 import com.fs.starfarer.api.ui.ValueDisplayMode;
 import java.awt.Color;
 import java.util.*;
@@ -104,6 +107,81 @@ public final class SettingsDialog implements InteractionDialogPlugin {
         }
     }
     private boolean retirementRange(){return editing.key.equals("ext_retirementMinCycles");}
+    private int exactCount(){return retirementRange()?2:editing.type.equals("array")?4:1;}
+    private String exactText() throws JSONException {
+        int count=exactCount();
+        StringBuilder text=new StringBuilder();
+        for(int i=0;i<count;i++){
+            if(i>0)text.append(", ");
+            if(retirementRange())text.append(SettingsPresentation.number(draft.getDouble(i==0?"ext_retirementMinCycles":"ext_retirementMaxCycles")));
+            else if(editing.type.equals("array"))text.append(SettingsPresentation.number(draft.getJSONArray(editing.key).getDouble(i)));
+            else text.append(SettingsPresentation.number(draft.getDouble(editing.key)));
+        }
+        return text.toString();
+    }
+    private String exactHelp(){
+        if(retirementRange())return "Enter the earliest and latest cycle, separated by a comma. 0 disables retirement. Then click Keep this change.";
+        String range="Range "+SettingsPresentation.number(editing.min)+" to "+SettingsPresentation.number(editing.max);
+        if(editing.type.equals("array"))return "Enter four values in ship order: frigate, destroyer, cruiser, capital. "+range+(editing.integer?"; whole numbers only.":".")+" Then click Keep this change.";
+        return range+(editing.integer?"; whole numbers only.":".")+" Use a dot for decimals. Then click Keep this change.";
+    }
+    private void openExactDialog() throws Exception {
+        final int count=exactCount();
+        final String title=SettingsPresentation.name(editing);
+        final String initial=exactText();
+        final String help=exactHelp();
+        dialog.showCustomDialog(540f,220f,new BaseCustomDialogDelegate(){
+            private TextFieldAPI field;
+            public void createCustomDialog(CustomPanelAPI panel,CustomDialogDelegate.CustomDialogCallback callback){
+                TooltipMakerAPI ui=panel.createUIElement(500f,150f,false);
+                ui.addPara(title,0f);
+                ui.addPara(help,8f);
+                field=ui.addTextField(460f,32f);
+                field.setText(initial);
+                field.setMaxChars(120);
+                panel.addUIElement(ui).inTL(0f,0f);
+                field.grabFocus();
+            }
+            public String getConfirmText(){return "Set value";}
+            public String getCancelText(){return "Cancel";}
+            public boolean hasCancelButton(){return true;}
+            public void customDialogConfirm(){
+                try{applyExact(field==null?"":field.getText(),count);}
+                catch(Exception e){
+                    try{render();}catch(Exception ignored){}
+                    dialog.getTextPanel().addPara("Could not use value: "+e.getMessage()+". Use dots for decimals and separate multiple values with commas.");
+                }
+            }
+            public void customDialogCancel(){}
+            public CustomUIPanelPlugin getCustomPanelPlugin(){return new BaseCustomUIPanelPlugin();}
+        });
+    }
+    private void applyExact(String text,int count) throws Exception {
+        String trimmed=text==null?"":text.trim();
+        if(trimmed.length()==0)throw new IllegalArgumentException("Enter a value");
+        String[] parts=trimmed.split("\\s*[,/]\\s*|\\s+");
+        if(parts.length!=count)throw new IllegalArgumentException("Enter "+count+" value"+(count==1?"":"s")+", separated by commas");
+        JSONObject next=SettingsModel.copy(draft);
+        double[] values=new double[count];
+        for(int i=0;i<count;i++){
+            double value;
+            try{value=Double.parseDouble(parts[i]);}
+            catch(NumberFormatException e){throw new IllegalArgumentException("'"+parts[i]+"' is not a number");}
+            if(!Double.isFinite(value))throw new IllegalArgumentException("Value must be finite");
+            SettingsModel.Entry entry=retirementRange() && i==1?SettingsPresentation.find("retirementMaxCycles"):editing;
+            if(!entry.integer)value=Math.round(value*10000d)/10000d;
+            values[i]=value;
+            if(retirementRange())next.put(entry.key,value);
+            else if(!editing.type.equals("array"))next.put(editing.key,value);
+        }
+        if(editing.type.equals("array") && !retirementRange()){
+            JSONArray array=new JSONArray();
+            for(double value:values)array.put(value);
+            next.put(editing.key,array);
+        }
+        SettingsModel.validate(next);
+        for(int i=0;i<count;i++)dialog.getOptionPanel().setSelectorValue("value"+i,(float)values[i]);
+    }
     private void renderEditor() throws Exception {
         OptionPanelAPI options=dialog.getOptionPanel();
         dialog.getTextPanel().addPara(SettingsPresentation.name(editing));
@@ -122,6 +200,7 @@ public final class SettingsDialog implements InteractionDialogPlugin {
                 double value=retirementRange()?draft.getDouble(limits.key):count==4?draft.getJSONArray(editing.key).getDouble(i):draft.getDouble(editing.key);
                 options.setSelectorValue("value"+i,(float)value);
             }
+            options.addOption("Enter exact value...","exact","Type a precise number instead of dragging the slider.");
         }
         options.addOption("Keep this change","keep");
         options.addOption("Use Survival default","reset");
@@ -138,6 +217,7 @@ public final class SettingsDialog implements InteractionDialogPlugin {
             else if(id.equals("review")){screen=Screen.REVIEW;page=0;}
             else if(id.startsWith("cat:")){category=id.substring(4);screen=Screen.DETAILS;page=0;}
             else if(id.startsWith("edit:")){editing=SettingsPresentation.find(id.substring(5));toggled=null;}
+            else if(id.equals("exact") && editing!=null && editing.editable(creation)){openExactDialog();return;}
             else if(id.equals("next"))page++;
             else if(id.equals("prev"))page--;
             else if(id.equals("toggle") && editing!=null && editing.editable(creation)){
