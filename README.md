@@ -43,7 +43,7 @@ Price, fuel, income, recovery, and hazard values are relative to Normal mode; re
 
 Each numeric setting has **Enter exact value...** below its sliders. This accepts one value, four comma-separated values in frigate / destroyer / cruiser / capital order, or an earliest/latest retirement range. Values still go through the normal range and whole-number validation.
 
-The **Presets** screen can save the settings currently staged in the editor as a named custom preset. Custom presets are stored in `saves/common/survival_dial_custom_presets.json.data`, so they are shared across campaigns. Selecting one restores the saved values; new-game-only values are preserved in an existing campaign, matching the built-in presets. Names are unique and cannot reuse `Easy`, `Medium`, `Hard`, `Insane`, or `Custom`.
+The **Presets** screen can save the settings currently staged in the editor as a named custom preset. Custom presets are stored in `saves/common/survival_dial_custom_presets.json.data`, so they are shared across campaigns. Selecting one restores the saved values; new-game-only values are preserved in an existing campaign, matching the built-in presets. Saving under an existing custom name updates that preset in place. Built-in names (`Easy`, `Medium`, `Hard`, `Insane`) and `Custom` are reserved.
 
 ## Install
 

@@ -93,7 +93,6 @@ public final class SettingsDialog implements InteractionDialogPlugin {
             if(saved.isEmpty())dialog.getTextPanel().addPara("No custom presets saved yet.");
             for(CustomPresets.Preset savedPreset:saved)options.addOption(savedPreset.name,"custompreset:"+savedPreset.name,
                 "Loads this saved preset. In an existing campaign, new-game-only values are preserved.");
-            options.addOption("Save current settings as a custom preset...","savepreset","Saves the settings currently staged in this editor.");
             if(!saved.isEmpty())options.addOption("Delete a custom preset...","deletepresets");
             back("Back to presets","presets");
         }else if(screen==Screen.DELETE_PRESETS){
@@ -199,10 +198,11 @@ public final class SettingsDialog implements InteractionDialogPlugin {
             public void customDialogConfirm(){
                 try{
                     String name=CustomPresets.validateName(field==null?"":field.getText());
-                    CustomPresets.add(name,draft);
-                    preset=name;screen=Screen.CUSTOM_PRESETS;page=0;
+                    boolean updated=CustomPresets.add(name,draft);
+                    CustomPresets.Preset saved=CustomPresets.find(name);
+                    preset=saved==null?name:saved.name;screen=Screen.CUSTOM_PRESETS;page=0;
                     render();
-                    dialog.getTextPanel().addPara("Saved custom preset \""+name+"\".");
+                    dialog.getTextPanel().addPara((updated?"Updated":"Saved")+" custom preset \""+preset+"\".");
                 }catch(Exception e){
                     try{render();}catch(Exception ignored){}
                     dialog.getTextPanel().addPara("Could not save preset: "+e.getMessage()+".");

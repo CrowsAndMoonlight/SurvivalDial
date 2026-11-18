@@ -269,13 +269,17 @@ public class SettingsTest {
         CustomPresets.load();
         check(CustomPresets.find("My test")!=null,"custom preset reloads from common file");
         rejects(()->CustomPresets.add("Hard",hard),"built-in preset name rejected");
-        rejects(()->CustomPresets.add("My test",hard),"duplicate custom preset rejected");
+        JSONObject replacement=SettingsModel.copy(hard);replacement.put("ext_fuelPriceMult",4.5);
+        check(CustomPresets.add("my TEST",replacement),"saving an existing name updates the preset");
+        check(CustomPresets.all().size()==1,"updating a preset does not create a duplicate");
+        check(CustomPresets.find("My test").profile.getDouble("ext_fuelPriceMult")==4.5,"update replaces the stored profile");
 
         SettingsDialog presetDialog=new SettingsDialog(hard,true,null);presetDialog.init(ui);
         presetDialog.optionSelected(null,"presets");
         check(labels.containsKey("custompresets") && labels.containsKey("savepreset"),"presets menu exposes saved presets and save action");
         presetDialog.optionSelected(null,"custompresets");
         check(labels.containsKey("custompreset:My test"),"custom preset list shows the saved name");
+        check(!labels.containsKey("savepreset"),"custom preset list does not duplicate the save action");
         presetDialog.optionSelected(null,"custompreset:My test");
         check(labels.get("presets").contains("My test"),"loading a custom preset labels it on the home screen");
         presetDialog.optionSelected(null,"presets");presetDialog.optionSelected(null,"custompresets");presetDialog.optionSelected(null,"deletepresets");
@@ -290,6 +294,10 @@ public class SettingsTest {
         dialogText(custom[0],"UI preset");
         check(CustomPresets.find("UI preset")!=null,"save preset dialog writes the preset");
         check(labels.containsKey("custompreset:UI preset"),"saved preset appears in the custom list");
+        presetDialog.optionSelected(null,"presets");custom[0]=null;presetDialog.optionSelected(null,"savepreset");
+        dialogText(custom[0],"ui PRESET");
+        check(CustomPresets.all().size()==1,"saving an existing name updates instead of duplicating");
+        check(paragraphs.stream().anyMatch(p->p.contains("Updated custom preset")),"duplicate save reports an update");
         presetDialog.optionSelected(null,"deletepresets");presetDialog.optionSelected(null,"deletepreset:UI preset");
         check(CustomPresets.all().isEmpty(),"custom preset list can be emptied");
         assertions+=CloudCoverageTest.run();

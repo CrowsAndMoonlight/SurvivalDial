@@ -53,22 +53,27 @@ public final class CustomPresets {
         }
     }
 
-    public static void add(String name, JSONObject profile) throws Exception {
+    public static boolean add(String name, JSONObject profile) throws Exception {
         SettingsModel.validate(profile);
         String clean = cleanName(name);
-        if (find(clean) != null) throw new IllegalArgumentException("A custom preset named \"" + clean + "\" already exists. Delete it first or choose another name");
-        if (presets.size() >= MAX_PRESETS) throw new IllegalArgumentException("At most " + MAX_PRESETS + " custom presets can be saved");
+        Preset existing = find(clean);
+        if (existing == null && presets.size() >= MAX_PRESETS) throw new IllegalArgumentException("At most " + MAX_PRESETS + " custom presets can be saved");
         JSONObject snapshot = new JSONObject();
         for (SettingsModel.Entry entry : SettingsModel.entries) {
             if (entry.supported() && profile.has(entry.key)) snapshot.put(entry.key, profile.get(entry.key));
         }
-        presets.add(new Preset(clean, SettingsModel.copy(snapshot)));
+        Preset replacement = new Preset(existing == null ? clean : existing.name, SettingsModel.copy(snapshot));
+        int index = existing == null ? presets.size() : presets.indexOf(existing);
+        if (existing == null) presets.add(replacement);
+        else presets.set(index, replacement);
         try {
             save();
         } catch (Exception e) {
-            presets.remove(presets.size() - 1);
+            if (existing == null) presets.remove(presets.size() - 1);
+            else presets.set(index, existing);
             throw e;
         }
+        return existing != null;
     }
 
     public static void remove(String name) throws Exception {
