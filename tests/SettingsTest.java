@@ -2,6 +2,7 @@ package survivaldial;
 
 import com.fs.starfarer.api.*;
 import com.fs.starfarer.api.campaign.*;
+import com.fs.starfarer.api.ui.*;
 import java.lang.reflect.*;
 import java.nio.file.*;
 import java.util.*;
@@ -17,6 +18,24 @@ public class SettingsTest {
         check(rejected,message);
     }
     @SuppressWarnings("unchecked") private static <T>T proxy(Class<T> type,InvocationHandler h){return (T)Proxy.newProxyInstance(type.getClassLoader(),new Class<?>[]{type},h);}
+    private static void exact(CustomDialogDelegate delegate,String value) throws Exception {
+        final String[] text={""};
+        TextFieldAPI field=proxy(TextFieldAPI.class,(o,m,a)->{
+            if(m.getName().equals("setText")){text[0]=(String)a[0];return null;}
+            if(m.getName().equals("getText"))return text[0];
+            return null;
+        });
+        TooltipMakerAPI tooltip=proxy(TooltipMakerAPI.class,(o,m,a)->m.getName().equals("addTextField")?field:null);
+        PositionAPI position=proxy(PositionAPI.class,(o,m,a)->m.getName().equals("inTL")?o:null);
+        CustomPanelAPI panel=proxy(CustomPanelAPI.class,(o,m,a)->{
+            if(m.getName().equals("createUIElement"))return tooltip;
+            if(m.getName().equals("addUIElement"))return position;
+            return null;
+        });
+        delegate.createCustomDialog(panel,proxy(CustomDialogDelegate.CustomDialogCallback.class,(o,m,a)->null));
+        field.setText(value);
+        delegate.customDialogConfirm();
+    }
     public static void main(String[] args) throws Exception {
         String json=Files.readString(Path.of(args[0]));
         JSONArray catalog=new JSONArray(json);
@@ -118,10 +137,12 @@ public class SettingsTest {
             return null;
         });
         boolean[] dismissed={false};
+        final CustomDialogDelegate[] custom={null};
         InteractionDialogAPI ui=proxy(InteractionDialogAPI.class,(o,m,a)->{
             if(m.getName().equals("getOptionPanel"))return options;
             if(m.getName().equals("getTextPanel"))return text;
             if(m.getName().equals("dismiss")){dismissed[0]=true;return null;}
+            if(m.getName().equals("showCustomDialog")){custom[0]=(CustomDialogDelegate)a[2];return null;}
             return null;
         });
         dialog.init(ui);dialog.optionSelected(null,"preset:Insane");dialog.optionSelected(null,"cancel");
@@ -190,6 +211,43 @@ public class SettingsTest {
         check(cloudPicked[0].getInt(CloudCoverage.KEY)==60,"custom cloud percentage accepted during new-game setup");
         customClouds.put(CloudCoverage.KEY,126);rejects(()->SettingsModel.validate(customClouds),"coverage above slider limit rejected");
         customClouds.put(CloudCoverage.KEY,-1);rejects(()->SettingsModel.validate(customClouds),"negative coverage rejected");
+        SettingsModel.apply(hard);
+        SettingsDialog exactDialog=new SettingsDialog(hard,false,null);exactDialog.init(ui);
+        selectors.clear();custom[0]=null;
+        exactDialog.optionSelected(null,"edit:ext_weaponPriceMult");
+        check(labels.containsKey("exact"),"numeric setting offers exact value entry");
+        exactDialog.optionSelected(null,"exact");
+        check(custom[0]!=null,"exact value dialog opens");
+        exact(custom[0],"0.75");
+        check(selectors.get("value0")==0.75f,"exact single value sets selector");
+        exactDialog.optionSelected(null,"keep");exactDialog.optionSelected(null,"apply");
+        check(settings.getDouble("ext_weaponPriceMult")==0.75,"exact single value applies");
+        check(new JSONObject((String)persistent.get(SettingsModel.SAVE_KEY)).getDouble("ext_weaponPriceMult")==0.75,"exact single value persists");
+
+        exactDialog=new SettingsDialog(hard,false,null);exactDialog.init(ui);
+        selectors.clear();custom[0]=null;
+        exactDialog.optionSelected(null,"edit:ext_fuelUseMult");exactDialog.optionSelected(null,"exact");
+        exact(custom[0],"1, 1, 1.25, 1.5");
+        check(selectors.get("value0")==1f && selectors.get("value1")==1f && selectors.get("value2")==1.25f && selectors.get("value3")==1.5f,"exact hull-size values set all selectors");
+        exactDialog.optionSelected(null,"keep");exactDialog.optionSelected(null,"apply");
+        JSONArray fuel=settings.getJSONArray("ext_fuelUseMult");
+        check(fuel.getDouble(2)==1.25 && fuel.getDouble(3)==1.5,"exact hull-size values apply");
+
+        exactDialog=new SettingsDialog(hard,true,null);exactDialog.init(ui);
+        selectors.clear();custom[0]=null;
+        exactDialog.optionSelected(null,"edit:ext_retirementMinCycles");exactDialog.optionSelected(null,"exact");
+        exact(custom[0],"40, 45");
+        check(selectors.get("value0")==40f && selectors.get("value1")==45f,"exact retirement range sets both selectors");
+        exactDialog.optionSelected(null,"keep");exactDialog.optionSelected(null,"apply");
+        check(settings.getDouble("ext_retirementMinCycles")==40 && settings.getDouble("ext_retirementMaxCycles")==45,"exact retirement range applies");
+
+        exactDialog=new SettingsDialog(hard,false,null);exactDialog.init(ui);
+        selectors.clear();custom[0]=null;
+        exactDialog.optionSelected(null,"edit:ext_weaponPriceMult");exactDialog.optionSelected(null,"exact");
+        exact(custom[0],"not-a-number");
+        check(paragraphs.stream().anyMatch(p->p.contains("Could not use value")),"invalid exact value is explained");
+        check(selectors.get("value0")==10f,"invalid exact value leaves selector unchanged");
+        exactDialog.optionSelected(null,"discardItem");
         assertions+=CloudCoverageTest.run();
         if(args.length>1)Files.writeString(Path.of(args[1]),table);
         System.out.println("PASS: "+assertions+" assertions (catalog, presets, validation, rollback, save isolation, native dialog Apply/Cancel)");
